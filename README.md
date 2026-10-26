@@ -1,29 +1,29 @@
-# OpenClaw 🦞 — Your assistant, on your devices, in your chats
+# OpenClaw 🦞 — Trợ lý AI của bạn, trên thiết bị của bạn và trong các cuộc trò chuyện
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-banner-light.png">
-    <img src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-banner-dark.png" alt="OpenClaw — EXFOLIATE! EXFOLIATE! Your AI assistant, running on your own devices.">
+    <img src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-banner-dark.png" alt="OpenClaw — Trợ lý AI chạy trên chính thiết bị của bạn.">
   </picture>
 </p>
 
 <p align="center">
-  <a href="https://github.com/openclaw/openclaw/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/openclaw/openclaw/ci.yml?branch=main&style=flat-square&label=ci" alt="CI status"></a>
-  <a href="https://www.npmjs.com/package/openclaw"><img src="https://img.shields.io/npm/v/openclaw?style=flat-square&label=npm" alt="npm version"></a>
-  <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/openclaw?style=flat-square" alt="Node.js version"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License: MIT"></a>
-  <a href="https://discord.gg/clawd"><img src="https://img.shields.io/discord/1456350064065904867?label=discord&logo=discord&logoColor=white&color=5865F2&style=flat-square" alt="Discord"></a>
+  <a href="https://github.com/openclaw/openclaw/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/openclaw/openclaw/ci.yml?branch=main&style=flat-square&label=ci" alt="Trạng thái CI"></a>
+  <a href="https://www.npmjs.com/package/openclaw"><img src="https://img.shields.io/npm/v/openclaw?style=flat-square&label=npm" alt="Phiên bản npm"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/node/v/openclaw?style=flat-square" alt="Phiên bản Node.js"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="Giấy phép: MIT"></a>
+  <a href="https://discord.gg/clawd"><img src="https://img.shields.io/discord/1456350064065904867?label=discord&logo=discord&logoColor=white&color=5865F2&style=flat-square" alt="Cộng đồng Discord"></a>
 </p>
 
-OpenClaw is an open-source AI assistant that runs on your own computer and meets you in the channels you already use: Discord, iMessage, Slack, Teams, Telegram, WhatsApp, and 20+ more, plus native apps for macOS, iOS, Android, Windows, and Linux. One Gateway runs it as a personal assistant on a laptop or as a shared [team deployment](https://docs.openclaw.ai/start/teams); configuration is the only difference.
+OpenClaw là trợ lý AI mã nguồn mở chạy trên máy tính của bạn và hoạt động trong những kênh trò chuyện bạn đang dùng: Discord, iMessage, Slack, Teams, Telegram, WhatsApp cùng hơn 20 nền tảng khác. OpenClaw cũng có ứng dụng riêng cho macOS, iOS, Android, Windows và Linux. Một Gateway có thể vận hành như trợ lý cá nhân trên máy tính xách tay hoặc triển khai dùng chung cho nhóm ([team deployment](https://docs.openclaw.ai/start/teams)); sự khác biệt chỉ nằm ở cấu hình.
 
-**Yours, with no catch.** State, memory, and credentials live on your hardware. Models and agent harnesses (Claude, Codex, local models) are plugins you can swap without changing anything else. Your prompts go to the model provider and chat platforms you configure, plus any diagnostics export you enable yourself; by default OpenClaw itself phones home for nothing but a daily version check, anonymous feature statistics are opt-in, and `update.checkOnStart: false` disables both ([what OpenClaw sends](https://docs.openclaw.ai/gateway/telemetry)). OpenClaw is stewarded by the [OpenClaw Foundation](https://openclaw.org), an independent 501(c)(3), and has no paid tier, hosted service, or token. The architecture case — trusted gateway, untrusted execution, policy enforced by code — is in [Why OpenClaw](https://docs.openclaw.ai/start/why-openclaw).
+**Của bạn, không kèm điều kiện ẩn.** Trạng thái, bộ nhớ và thông tin xác thực được lưu trên phần cứng của bạn. Các mô hình và môi trường chạy tác tử (Claude, Codex, mô hình cục bộ) là plugin có thể thay thế mà không cần đổi các thành phần khác. Prompt được gửi đến nhà cung cấp mô hình và nền tảng trò chuyện do bạn cấu hình, cùng với dữ liệu chẩn đoán nếu bạn chủ động bật xuất dữ liệu. Theo mặc định, OpenClaw chỉ tự kiểm tra phiên bản mỗi ngày; thống kê tính năng ẩn danh là tùy chọn. Đặt `update.checkOnStart: false` sẽ tắt cả hai ([OpenClaw gửi những dữ liệu nào](https://docs.openclaw.ai/gateway/telemetry)). OpenClaw được quản lý bởi [OpenClaw Foundation](https://openclaw.org), một tổ chức độc lập theo diện 501(c)(3), không có gói trả phí, dịch vụ lưu trữ do dự án cung cấp hay token riêng. Tìm hiểu lập luận kiến trúc — Gateway đáng tin cậy, quá trình thực thi không đáng tin cậy và chính sách được thực thi bằng mã — tại [Vì sao chọn OpenClaw](https://docs.openclaw.ai/start/why-openclaw).
 
-[Website](https://openclaw.ai) · [Docs](https://docs.openclaw.ai) · [Getting started](https://docs.openclaw.ai/start/getting-started) · [Why OpenClaw](https://docs.openclaw.ai/start/why-openclaw) · [FAQ](https://docs.openclaw.ai/help/faq) · [Vision](VISION.md) · [DeepWiki](https://deepwiki.com/openclaw/openclaw)
+[Trang web](https://openclaw.ai) · [Tài liệu](https://docs.openclaw.ai) · [Bắt đầu sử dụng](https://docs.openclaw.ai/start/getting-started) · [Vì sao chọn OpenClaw](https://docs.openclaw.ai/start/why-openclaw) · [Câu hỏi thường gặp](https://docs.openclaw.ai/help/faq) · [Tầm nhìn dự án](VISION.md) · [DeepWiki](https://deepwiki.com/openclaw/openclaw)
 
-## Install
+## Cài đặt
 
-The installer supports macOS, Linux, and Windows. It provisions a supported Node.js runtime when needed.
+Trình cài đặt hỗ trợ macOS, Linux và Windows. Khi cần, trình cài đặt sẽ thiết lập môi trường chạy Node.js tương thích.
 
 ```bash
 # macOS / Linux / WSL2
@@ -35,65 +35,63 @@ curl -fsSL https://openclaw.ai/install.sh | bash
 iwr -useb https://openclaw.ai/install.ps1 | iex
 ```
 
-Already manage Node.js? Install the published package instead (Node 24.16+ or 26.1+; Node 26 recommended):
+Đã tự quản lý Node.js? Bạn có thể cài gói đã phát hành thay thế (Node.js 24.16 trở lên hoặc 26.1 trở lên; khuyến nghị Node.js 26):
 
 ```bash
 npm install -g openclaw@latest --allow-scripts=openclaw
 ```
 
-That command is for npm 12 or npm 11.16+. On npm 11.15 and earlier, omit
-`--allow-scripts=openclaw`. See the
-[installation guide](https://docs.openclaw.ai/install) for the lifecycle script
-contract, Docker, Nix, and other deployment paths.
+Lệnh trên dành cho npm 12 hoặc npm 11.16 trở lên. Với npm 11.15 trở xuống, hãy bỏ
+`--allow-scripts=openclaw`. Xem [hướng dẫn cài đặt](https://docs.openclaw.ai/install) để tìm hiểu về quy trình lifecycle script, Docker, Nix và các phương án triển khai khác.
 
-## Quick start
+## Bắt đầu nhanh
 
-On a fresh install, the installer scripts start onboarding automatically.
-Complete the wizard they open. If you installed the package directly with npm,
-pnpm, or Bun, run:
+Sau khi cài mới, tập lệnh cài đặt sẽ tự động khởi chạy quy trình thiết lập ban đầu.
+Hãy làm theo trình hướng dẫn được mở ra. Nếu bạn cài gói trực tiếp bằng npm,
+pnpm hoặc Bun, hãy chạy:
 
 ```bash
 openclaw onboard --install-daemon
 ```
 
-After onboarding:
+Sau khi hoàn tất thiết lập:
 
 ```bash
 openclaw gateway status
 openclaw dashboard
 ```
 
-Onboarding verifies model access, creates the workspace, and configures the Gateway. The last command opens the Control UI; send a message there to confirm the assistant is working. See the [getting started guide](https://docs.openclaw.ai/start/getting-started) for channel setup and troubleshooting.
+Quy trình thiết lập sẽ kiểm tra quyền truy cập mô hình, tạo không gian làm việc và cấu hình Gateway. Lệnh cuối cùng mở giao diện Control UI; hãy gửi một tin nhắn để xác nhận trợ lý hoạt động bình thường. Xem [hướng dẫn bắt đầu](https://docs.openclaw.ai/start/getting-started) để biết cách thiết lập kênh trò chuyện và xử lý sự cố.
 
-## How it fits together
+## Các thành phần phối hợp với nhau như thế nào
 
-- The [Gateway](https://docs.openclaw.ai/gateway) is the local control plane for sessions, tools, events, and channel connections.
-- The [Control UI](https://docs.openclaw.ai/web/control-ui), CLI, and [TUI](https://docs.openclaw.ai/web/tui) connect to the Gateway.
-- [Channels](https://docs.openclaw.ai/channels) bring the assistant to WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage, and other messaging services.
-- [Companion apps and nodes](https://docs.openclaw.ai/platforms) add voice, Canvas, camera, screen, and device-local actions on supported platforms.
+- [Gateway](https://docs.openclaw.ai/gateway) là lớp điều khiển cục bộ quản lý phiên, công cụ, sự kiện và kết nối với các kênh trò chuyện.
+- [Control UI](https://docs.openclaw.ai/web/control-ui), CLI và [TUI](https://docs.openclaw.ai/web/tui) kết nối với Gateway.
+- [Kênh trò chuyện](https://docs.openclaw.ai/channels) đưa trợ lý đến WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage và các dịch vụ nhắn tin khác.
+- [Ứng dụng đồng hành và node thiết bị](https://docs.openclaw.ai/platforms) bổ sung giọng nói, Canvas, camera, màn hình và thao tác trực tiếp trên thiết bị ở các nền tảng được hỗ trợ.
 
-OpenClaw works with hosted and local [model providers](https://docs.openclaw.ai/concepts/model-providers). Its [tools](https://docs.openclaw.ai/tools), [skills](https://docs.openclaw.ai/tools/skills), and [plugins](https://docs.openclaw.ai/plugins) extend what an assistant can do.
+OpenClaw tương thích với các [nhà cung cấp mô hình](https://docs.openclaw.ai/concepts/model-providers) trên nền tảng đám mây lẫn chạy cục bộ. [Công cụ](https://docs.openclaw.ai/tools), [kỹ năng](https://docs.openclaw.ai/tools/skills) và [plugin](https://docs.openclaw.ai/plugins) giúp mở rộng khả năng của trợ lý.
 
-## Security
+## Bảo mật
 
-Treat inbound messages as untrusted input. DM-capable channels pair unknown senders by default; approve a pairing request with `openclaw pairing approve <channel> <code>`.
+Hãy xem mọi tin nhắn đến là dữ liệu đầu vào không đáng tin cậy. Theo mặc định, các kênh hỗ trợ tin nhắn riêng sẽ yêu cầu ghép đôi với người gửi chưa xác định; phê duyệt yêu cầu ghép đôi bằng lệnh `openclaw pairing approve <channel> <code>`.
 
-Tools run on the host for the main session unless you configure sandboxing. Read the [security guide](https://docs.openclaw.ai/gateway/security), [exposure runbook](https://docs.openclaw.ai/gateway/security/exposure-runbook), and [sandboxing guide](https://docs.openclaw.ai/gateway/sandboxing) before connecting other users or exposing the Gateway remotely.
+Các công cụ chạy trực tiếp trên máy chủ trong phiên chính, trừ khi bạn cấu hình sandbox. Trước khi kết nối người dùng khác hoặc để Gateway có thể truy cập từ xa, hãy đọc [hướng dẫn bảo mật](https://docs.openclaw.ai/gateway/security), [quy trình xử lý khi để lộ dịch vụ](https://docs.openclaw.ai/gateway/security/exposure-runbook) và [hướng dẫn sandbox](https://docs.openclaw.ai/gateway/sandboxing).
 
-## Documentation
+## Tài liệu hướng dẫn
 
-| Goal                             | Start here                                                                                                                                                                                                                                                           |
+| Mục tiêu                         | Bắt đầu tại đây                                                                                                                                                                                                                                                           |
 | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Configure models and auth        | [Models](https://docs.openclaw.ai/concepts/models) · [Model providers](https://docs.openclaw.ai/concepts/model-providers)                                                                                                                                            |
-| Connect a messaging service      | [Channels](https://docs.openclaw.ai/channels)                                                                                                                                                                                                                        |
-| Add tools, skills, and plugins   | [Tools](https://docs.openclaw.ai/tools) · [Skills](https://docs.openclaw.ai/tools/skills) · [Plugins](https://docs.openclaw.ai/plugins) · [ClawHub](https://clawhub.ai)                                                                                              |
-| Run apps and device nodes        | [Platforms](https://docs.openclaw.ai/platforms) · [Nodes](https://docs.openclaw.ai/nodes)                                                                                                                                                                            |
-| Use the CLI and chat commands    | [CLI reference](https://docs.openclaw.ai/cli) · [Slash commands](https://docs.openclaw.ai/tools/slash-commands)                                                                                                                                                      |
-| Configure or operate the Gateway | [Configuration](https://docs.openclaw.ai/gateway/configuration) · [Architecture](https://docs.openclaw.ai/concepts/architecture) · [Updating](https://docs.openclaw.ai/install/updating) · [Release channels](https://docs.openclaw.ai/install/development-channels) |
+| Cấu hình mô hình và xác thực      | [Models](https://docs.openclaw.ai/concepts/models) · [Model providers](https://docs.openclaw.ai/concepts/model-providers)                                                                                                                                            |
+| Kết nối dịch vụ nhắn tin           | [Channels](https://docs.openclaw.ai/channels)                                                                                                                                                                                                                        |
+| Thêm công cụ, kỹ năng và plugin    | [Tools](https://docs.openclaw.ai/tools) · [Skills](https://docs.openclaw.ai/tools/skills) · [Plugins](https://docs.openclaw.ai/plugins) · [ClawHub](https://clawhub.ai)                                                                                              |
+| Chạy ứng dụng và node thiết bị     | [Platforms](https://docs.openclaw.ai/platforms) · [Nodes](https://docs.openclaw.ai/nodes)                                                                                                                                                                            |
+| Sử dụng CLI và lệnh trò chuyện     | [CLI reference](https://docs.openclaw.ai/cli) · [Slash commands](https://docs.openclaw.ai/tools/slash-commands)                                                                                                                                                      |
+| Cấu hình hoặc vận hành Gateway     | [Configuration](https://docs.openclaw.ai/gateway/configuration) · [Architecture](https://docs.openclaw.ai/concepts/architecture) · [Updating](https://docs.openclaw.ai/install/updating) · [Release channels](https://docs.openclaw.ai/install/development-channels) |
 
-## Development
+## Phát triển
 
-The repository is a pnpm workspace. Plain `npm install` at the repository root is not supported.
+Repository này sử dụng workspace của pnpm. Không hỗ trợ chạy `npm install` thông thường tại thư mục gốc.
 
 ```bash
 git clone https://github.com/openclaw/openclaw.git
@@ -103,25 +101,25 @@ pnpm build
 pnpm ui:build
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow and the [source setup guide](https://docs.openclaw.ai/start/setup) for the development loop.
+Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [hướng dẫn thiết lập mã nguồn](https://docs.openclaw.ai/start/setup) để nắm quy trình phát triển.
 
-## Governance
+## Quản trị dự án
 
-OpenClaw is developed in the open by the [OpenClaw Foundation](https://openclaw.org), an independent 501(c)(3). The Foundation employs the core team and signs releases. Donors and infrastructure sponsors support the Foundation; none of them own or direct the project. OpenAI is a donor, not an owner.
+OpenClaw được phát triển công khai dưới sự quản lý của [OpenClaw Foundation](https://openclaw.org), một tổ chức độc lập theo diện 501(c)(3). Foundation tuyển dụng đội ngũ nòng cốt và ký xác nhận các bản phát hành. Các nhà tài trợ và đơn vị hỗ trợ hạ tầng hỗ trợ Foundation nhưng không sở hữu hay điều hành dự án. OpenAI là nhà tài trợ, không phải chủ sở hữu.
 
-## Community
+## Cộng đồng
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for maintainers and contribution guidelines; AI-assisted PRs are welcome.
+Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết thông tin về người duy trì và hướng dẫn đóng góp; các pull request có hỗ trợ bởi AI đều được hoan nghênh.
 
-Use the [issue chooser](https://github.com/openclaw/openclaw/issues/new/choose) for bugs and feature requests, get official OpenClaw support at [community.openclaw.ai](https://community.openclaw.ai/), and report vulnerabilities through [SECURITY.md](SECURITY.md). New capabilities usually belong in plugins built on the [plugin SDK](https://docs.openclaw.ai/plugins/building-plugins) and shared through [ClawHub](https://clawhub.ai).
+Hãy dùng [biểu mẫu tạo issue](https://github.com/openclaw/openclaw/issues/new/choose) để báo lỗi hoặc đề xuất tính năng, nhận hỗ trợ chính thức tại [community.openclaw.ai](https://community.openclaw.ai/) và báo cáo lỗ hổng qua [SECURITY.md](SECURITY.md). Các khả năng mới thường nên được phát triển thành plugin dựa trên [plugin SDK](https://docs.openclaw.ai/plugins/building-plugins) rồi chia sẻ qua [ClawHub](https://clawhub.ai).
 
-OpenClaw was built for **Molty**, a space lobster AI assistant, by Peter Steinberger and the community. Explore the [project lore](https://docs.openclaw.ai/start/lore), [soul.md](https://soul.md), [Peter's site](https://steipete.me), [Star History](https://www.star-history.com/#openclaw/openclaw&type=date&legend=top-left), and [@openclaw](https://x.com/openclaw).
+OpenClaw được Peter Steinberger cùng cộng đồng xây dựng dành cho **Molty**, một trợ lý AI hình tôm hùm ngoài không gian. Khám phá [câu chuyện và bối cảnh của dự án](https://docs.openclaw.ai/start/lore), [soul.md](https://soul.md), [trang web của Peter](https://steipete.me), [lịch sử sao GitHub](https://www.star-history.com/#openclaw/openclaw&type=date&legend=top-left) và [@openclaw](https://x.com/openclaw).
 
-Special thanks to [Mario Zechner](https://mariozechner.at/) for his support and for [pi](https://github.com/earendil-works/pi), and to Adam Doppelt for the lobster.bot domain.
+Xin cảm ơn [Mario Zechner](https://mariozechner.at/) vì sự hỗ trợ và dự án [pi](https://github.com/earendil-works/pi), cùng Adam Doppelt vì tên miền lobster.bot.
 
-## Donors and sponsors
+## Nhà tài trợ và đơn vị hỗ trợ
 
-The Foundation is funded by donors including Amazon, Lobster Computer Company, Offline Holdings, OpenAI, Red Hat, and the University of Michigan, with infrastructure support from Blacksmith, Convex, GitHub, NVIDIA, and Vercel.
+Foundation nhận tài trợ từ Amazon, Lobster Computer Company, Offline Holdings, OpenAI, Red Hat và Đại học Michigan; hạ tầng được hỗ trợ bởi Blacksmith, Convex, GitHub, NVIDIA và Vercel.
 
 <table>
   <tr>
@@ -135,9 +133,9 @@ The Foundation is funded by donors including Amazon, Lobster Computer Company, O
   </tr>
 </table>
 
-## Contributors
+## Người đóng góp
 
-Thanks to all clawtributors:
+Xin cảm ơn tất cả những người đã đóng góp cho OpenClaw:
 
 <!-- clawtributors:start -->
 
@@ -326,6 +324,6 @@ yxjsxy
 zijiess
 clawtributors:hidden:end -->
 
-## License
+## Giấy phép
 
-[MIT](LICENSE) © OpenClaw Foundation. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for incorporated or adapted code.
+[MIT](LICENSE) © OpenClaw Foundation. Xem [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) để biết thông tin về mã nguồn được tích hợp hoặc điều chỉnh từ bên thứ ba.
