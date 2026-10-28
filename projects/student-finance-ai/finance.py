@@ -48,6 +48,8 @@ def validate_month(value: str) -> str:
     return value
 
 def validate_date(value: str) -> str:
+    if not isinstance(value, str) or len(value) != 10 or value[4:5] != "-" or value[7:8] != "-":
+        raise ValueError("Date must use YYYY-MM-DD format.")
     try: return date.fromisoformat(value).isoformat()
     except ValueError as exc: raise ValueError("Date must use YYYY-MM-DD format.") from exc
 
