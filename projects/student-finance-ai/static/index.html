@@ -193,13 +193,14 @@
   $("transaction-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     const button = $("save-transaction");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     payload.amount_vnd = Number(payload.amount_vnd);
     button.disabled = true;
     try {
       await api("/api/transactions", { method:"POST", body:JSON.stringify(payload) });
-      event.currentTarget.reset();
+      formElement.reset();
       $("transaction_date").value = localDate();
       setStatus("Đã lưu giao dịch.");
       await loadAll();
