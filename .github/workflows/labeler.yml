@@ -23,8 +23,11 @@ permissions: {}
 
 jobs:
   label:
+    # This workflow uses GitHub App private-key secrets available in the upstream repository only.
+    # Skip it in personal forks; project-specific tests and checks continue to run there.
     if: >-
       ${{ (
+        github.repository == 'openclaw/openclaw' &&
         github.event_name == 'pull_request_target' &&
         (
           github.event.action != 'edited' ||
