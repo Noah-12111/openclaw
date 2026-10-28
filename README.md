@@ -100,49 +100,40 @@ pnpm ui:build
 
 Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [hướng dẫn thiết lập mã nguồn](https://docs.openclaw.ai/start/setup) để nắm quy trình phát triển.
 
-## Các tùy biến và dự án đã thực hiện trong fork này
+## Những phần đã tùy biến và dự án thực hành
 
-### Tùy biến README và nhận diện
+### Tùy biến fork OpenClaw
+- Việt hóa README để dễ đọc hơn với người dùng tiếng Việt.
+- Thiết kế lại banner README theo chủ đề trợ lý AI hỗ trợ lập trình tại `docs/assets/openclaw-banner-ai-coding.svg`.
+- Sắp xếp mã nguồn của dự án thực hành thu–chi vào thư mục độc lập `examples/vi-sinh-vien/`.
 
-- Việt hóa README để hướng dẫn và mô tả dự án dễ đọc hơn với người dùng tiếng Việt.
-- Thiết kế lại banner README theo chủ đề trợ lý AI hỗ trợ lập trình. Tệp banner hiện nằm tại `docs/assets/openclaw-banner-ai-coding.svg`.
-- Bổ sung tài liệu cho dự án thực hành cá nhân bên dưới. Dự án này là ứng dụng độc lập, **không phải chức năng tích hợp sẵn của OpenClaw**.
+### Ví Sinh Viên — Quản lý thu chi
+Ứng dụng web demo giúp sinh viên ghi chép thu nhập, chi tiêu, xem tổng số dư, phân tích chi tiêu theo danh mục, đặt ngân sách theo tháng, sửa/xóa giao dịch và xuất/khôi phục dữ liệu CSV/JSON.
 
-### Ví Sinh Viên — Quản lý thu chi cá nhân
+**Cấu trúc mã nguồn:** `index.html`, `styles.css`, máy chủ `index.js`, cùng các module trong `src/`:
+- `main.js`: khởi động ứng dụng, gắn sự kiện và điều phối giao diện.
+- `input.js`: xác thực dữ liệu giao dịch và file sao lưu trước khi nhập.
+- `output.js`: định dạng tiền/ngày, dựng hàng giao dịch và tải file.
+- `storage.js`: lưu, đọc và xóa dữ liệu trong `localStorage`.
+- `finance.js`: tổng thu/chi, số dư, tỷ lệ tiết kiệm và nhóm chi tiêu.
+- `config.js`: danh mục giao dịch và cấu hình.
+- `tests/input.test.js`: kiểm thử đầu vào bằng `node:test`.
 
-Ứng dụng web giúp sinh viên theo dõi thu nhập, chi tiêu và ngân sách theo tháng.
+**Những công nghệ/API đã tận dụng:** HTML cho cấu trúc form và bảng; CSS cho dashboard responsive; JavaScript ES modules, DOM và event listeners cho logic giao dịch; `Intl.NumberFormat` cho tiền Việt Nam; `localStorage` để lưu dữ liệu cục bộ; `Blob`, `FileReader` và `URL.createObjectURL` cho xuất/nhập file; các module tích hợp sẵn của Node.js (`http`, `fs`, `path`, `url`) để chạy máy chủ trên localhost; GitHub fork và README để tổ chức mã nguồn, hướng dẫn chạy và theo dõi commit. Dự án không cần thư viện npm bên ngoài.
 
-**Các chức năng đã xây dựng:**
-
-- Bảng tổng quan số dư, tổng thu nhập, tổng chi tiêu và tỷ lệ tiết kiệm.
-- Thêm, sửa, xóa giao dịch; tìm kiếm và lọc theo loại giao dịch.
-- Phân loại các khoản chi như ăn uống, đi lại, học tập, nhà ở, mua sắm và giải trí.
-- Biểu đồ dòng tiền và thống kê chi tiêu theo danh mục.
-- Thiết lập ngân sách tháng, theo dõi số tiền đã dùng và còn lại.
-- Xuất giao dịch CSV và sao lưu/khôi phục dữ liệu JSON.
-
-**Công nghệ:** HTML, CSS và JavaScript thuần; Node.js cung cấp máy chủ web cục bộ. Ứng dụng không cần thư viện npm bên ngoài. Giao dịch được lưu trong `localStorage` của trình duyệt, chưa có backend hoặc đồng bộ giữa các thiết bị.
-
-#### Chạy demo trên Windows và VS Code
-
-Tải và giải nén bộ dự án Ví Sinh Viên riêng, sau đó mở đúng thư mục có các file `index.html`, `styles.css`, `app.js`, `index.js` và `package.json`. Mở Terminal trong VS Code và chạy:
+#### Chạy demo trên Windows / VS Code
+Mở thư mục `examples/vi-sinh-vien` trong VS Code, mở Terminal và chạy:
 
 ```powershell
-node -v
-node --check .\index.js
-node --check .\app.js
+node --version
+npm.cmd run check
+npm.cmd test
 npm.cmd start
 ```
 
-Khi terminal báo máy chủ đang chạy, mở [http://127.0.0.1:5500](http://127.0.0.1:5500) trong trình duyệt. Giữ terminal mở trong lúc sử dụng; nhấn `Ctrl+C` để dừng máy chủ.
+Sau đó mở [http://127.0.0.1:5500](http://127.0.0.1:5500). Có thể bấm đúp `start.bat` để tự kiểm tra cú pháp và chạy ứng dụng. Dừng máy chủ bằng `Ctrl+C`.
 
-Có thể chạy kiểm tra cú pháp bằng:
-
-```powershell
-npm.cmd run check
-```
-
-Không cần chạy `npm install` cho bản demo hiện tại và không có lệnh `node cli.js budget ...`; ngân sách được thiết lập trong giao diện **Ngân sách**. Hãy sao lưu JSON định kỳ nếu có dữ liệu cần giữ lại.
+**Phạm vi hiện tại:** Đây là ứng dụng web độc lập; dữ liệu nằm trong trình duyệt hiện tại. Chưa có backend, đăng nhập, đồng bộ đám mây, kết nối ngân hàng hoặc tích hợp OpenClaw Gateway/AI. Các thay đổi README/banner và việc quản lý mã nguồn nằm trong fork; không nên hiểu nhầm app thu–chi là tính năng gốc của OpenClaw.
 
 ---
 

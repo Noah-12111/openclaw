@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6658d3">
+  <meta name="description" content="Ví Sinh Viên - ứng dụng theo dõi thu nhập, chi tiêu và ngân sách cá nhân.">
+  <title>Ví Sinh Viên | Quản lý thu chi</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Ví Sinh Viên, trang chủ"><span class="brand-mark">V</span><span>Ví Sinh Viên<small>QUẢN LÝ TÀI CHÍNH CÁ NHÂN</small></span></a>
+    <span class="demo-label">BẢN DEMO CỤC BỘ</span>
+  </header>
+  <main class="container">
+    <section class="intro">
+      <div><p class="eyebrow">TỔNG QUAN TÀI CHÍNH</p><h1>Chủ động với ví tiền của bạn.</h1><p class="muted">Theo dõi các khoản thu, chi và đặt ngân sách theo tháng.</p></div>
+      <label class="month-field">Tháng xem <input id="month-select" type="month"></label>
+    </section>
+    <section class="metrics" aria-label="Tổng quan số liệu">
+      <article class="metric"><span>Số dư tháng</span><strong id="balance-total">0 ₫</strong><small>Thu nhập trừ chi tiêu</small></article>
+      <article class="metric"><span>Tổng thu nhập</span><strong id="income-total" class="positive">0 ₫</strong><small>Tiền vào trong tháng</small></article>
+      <article class="metric"><span>Tổng chi tiêu</span><strong id="expense-total" class="negative">0 ₫</strong><small>Tiền đã sử dụng</small></article>
+      <article class="metric"><span>Tỷ lệ tiết kiệm</span><strong id="saving-rate">0%</strong><small>Trên tổng thu nhập</small></article>
+    </section>
+    <section class="grid">
+      <article class="panel">
+        <div class="panel-heading"><div><h2>Thêm giao dịch</h2><p class="muted">Ghi lại một khoản thu hoặc chi.</p></div></div>
+        <form id="transaction-form">
+          <input id="transaction-id" type="hidden">
+          <div class="form-grid">
+            <label>Loại giao dịch<select id="transaction-type" required><option value="expense">Chi tiêu</option><option value="income">Thu nhập</option></select></label>
+            <label>Danh mục<select id="transaction-category" required></select></label>
+            <label class="wide">Tên giao dịch<input id="transaction-name" maxlength="80" required placeholder="Ví dụ: Ăn trưa ở trường"></label>
+            <label>Số tiền (VNĐ)<input id="transaction-amount" type="number" min="1" step="1000" required placeholder="50000"></label>
+            <label>Ngày<input id="transaction-date" type="date" required></label>
+            <label class="wide">Ghi chú<input id="transaction-note" maxlength="200" placeholder="Không bắt buộc"></label>
+          </div>
+          <div class="form-actions"><button id="save-transaction" class="button primary" type="submit">Lưu giao dịch</button><button id="cancel-edit" class="button secondary" type="button" hidden>Hủy sửa</button></div>
+        </form>
+      </article>
+      <article class="panel budget-panel">
+        <div class="panel-heading"><div><h2>Ngân sách tháng</h2><p class="muted">Đặt giới hạn chi tiêu để theo dõi.</p></div><span class="budget-icon">◎</span></div>
+        <form id="budget-form" class="budget-form">
+          <label>Tháng ngân sách<input id="budget-month" type="month" required></label>
+          <label>Ngân sách (VNĐ)<input id="budget-limit" type="number" min="1" step="100000" required placeholder="3000000"></label>
+          <button class="button primary" type="submit">Lưu ngân sách</button>
+        </form>
+        <div class="budget-summary"><div><span>Đã chi</span><strong id="budget-spent">0 ₫</strong></div><div><span>Còn lại</span><strong id="budget-left">Chưa đặt</strong></div><div><span>Đã dùng</span><strong id="budget-percent">—</strong></div></div>
+        <div class="progress"><span id="budget-progress"></span></div>
+        <p id="budget-note" class="muted">Hãy đặt ngân sách để bắt đầu theo dõi.</p>
+      </article>
+    </section>
+    <section class="grid lower-grid">
+      <article class="panel">
+        <div class="panel-heading"><div><h2>Chi tiêu theo danh mục</h2><p class="muted">Những nhóm đang sử dụng nhiều ngân sách nhất.</p></div></div>
+        <div id="category-summary" class="category-summary"><p class="empty">Chưa có dữ liệu chi tiêu trong tháng.</p></div>
+      </article>
+      <article class="panel transactions-panel">
+        <div class="panel-heading"><div><h2>Lịch sử giao dịch</h2><p class="muted" id="transaction-count">0 giao dịch</p></div></div>
+        <div class="toolbar"><input id="search-input" type="search" placeholder="Tìm giao dịch..." aria-label="Tìm giao dịch"><select id="type-filter" aria-label="Lọc loại"><option value="all">Tất cả loại</option><option value="income">Thu nhập</option><option value="expense">Chi tiêu</option></select></div>
+        <div class="table-wrap"><table><thead><tr><th>Giao dịch</th><th>Danh mục</th><th>Ngày</th><th class="right">Số tiền</th><th></th></tr></thead><tbody id="transaction-list"></tbody></table><p id="transactions-empty" class="empty">Chưa có giao dịch phù hợp.</p></div>
+        <div class="data-actions"><button class="text-button" id="export-csv">Xuất CSV</button><button class="text-button" id="backup-json">Sao lưu JSON</button><label class="text-button import-button">Nhập JSON<input id="import-json" type="file" accept=".json,application/json" hidden></label><button class="text-button danger-text" id="clear-data">Xóa dữ liệu</button></div>
+      </article>
+    </section>
+    <p id="notice" class="notice" role="status" aria-live="polite"></p>
+    <footer>Ví Sinh Viên · Dữ liệu được lưu cục bộ trong trình duyệt của bạn.</footer>
+  </main>
+</body>
+</html>

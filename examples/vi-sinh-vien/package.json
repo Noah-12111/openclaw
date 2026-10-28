@@ -1,0 +1,12 @@
+{
+  "name": "vi-sinh-vien-thu-chi",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ứng dụng web quản lý thu chi sinh viên bằng HTML, CSS và JavaScript thuần.",
+  "scripts": {
+    "start": "node index.js",
+    "check": "node --check index.js && node --check src/main.js && node --check src/input.js && node --check src/output.js && node --check src/storage.js && node --check src/finance.js && node --check src/config.js && node --check tests/input.test.js",
+    "test": "node --test tests/*.test.js"
+  }
+}
