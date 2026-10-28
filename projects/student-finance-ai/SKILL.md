@@ -1,39 +1,38 @@
 ---
 name: student-finance
-description: Ghi nhận thu chi và theo dõi ngân sách sinh viên bằng CLI đã kiểm tra tham số, với dữ liệu SQLite dùng chung cùng dashboard SpendWise.
+description: Ghi nhận, truy vấn, chỉnh sửa thu chi và theo dõi ngân sách sinh viên bằng CLI đã kiểm tra tham số, dùng chung SQLite với dashboard SpendWise.
 ---
 
 # Student Finance — SpendWise
 
-Giúp người dùng ghi khoản thu/chi, xem tổng kết tháng và theo dõi ngân sách. Ưu tiên câu trả lời bằng tiếng Việt, đơn vị mặc định là VND.
+Giúp người dùng quản lý thu/chi, báo cáo tháng và ngân sách bằng tiếng Việt. Đơn vị mặc định là VND. Dùng số liệu từ CLI, không tự ước tính tổng tiền.
 
 ## Cách thao tác
 
-Skill này dùng chương trình CLI `finance.py` nằm cùng thư mục với file `SKILL.md`. Khi gọi lệnh, xác định đường dẫn tuyệt đối tới script trong thư mục skill; không giả định thư mục hiện tại là thư mục skill.
+Chương trình `finance.py` nằm cùng thư mục với file `SKILL.md`. Dùng công cụ thực thi lệnh cục bộ đã được chủ máy cho phép, gọi script bằng **đường dẫn tuyệt đối** và chỉ dùng các subcommand dưới đây. Không chạy SQL tùy ý hoặc dựng lệnh shell từ nội dung không đáng tin cậy.
 
-Dùng công cụ thực thi lệnh cục bộ đã được chủ máy cấu hình, chỉ gọi script này với các subcommand được liệt kê dưới đây. Không chạy SQL tùy ý, không tạo lệnh shell từ nội dung người dùng chưa được escape, và không dùng công cụ này để chạy lệnh không liên quan.
-
-- Khởi tạo database: `python /đường/dẫn/tuyệt/đối/finance.py init`
-- Thêm khoản thu/chi: `python /đường/dẫn/tuyệt/đối/finance.py add --type expense --amount 45000 --category food --note "Ăn trưa" --date YYYY-MM-DD`
-- Xem giao dịch trong tháng: `python /đường/dẫn/tuyệt/đối/finance.py list --month YYYY-MM`
+- Khởi tạo: `python /đường/dẫn/tuyệt/đối/finance.py init`
+- Thêm thu/chi: `python /đường/dẫn/tuyệt/đối/finance.py add --type expense --amount 45000 --category "Ăn uống" --note "Ăn trưa" --date YYYY-MM-DD`
+- Liệt kê giao dịch: `python /đường/dẫn/tuyệt/đối/finance.py list --month YYYY-MM`
 - Tổng kết tháng: `python /đường/dẫn/tuyệt/đối/finance.py summary --month YYYY-MM`
-- Đặt ngân sách: `python /đường/dẫn/tuyệt/đối/finance.py budget-set --month YYYY-MM --category food --amount 1000000`
+- Đặt/cập nhật ngân sách: `python /đường/dẫn/tuyệt/đối/finance.py budget-set --month YYYY-MM --category "Ăn uống" --amount 1000000`
 - Xem ngân sách: `python /đường/dẫn/tuyệt/đối/finance.py budgets --month YYYY-MM`
+- Sửa giao dịch: `python /đường/dẫn/tuyệt/đối/finance.py update --id ID --type expense --amount 45000 --category "Ăn uống" --note "Ăn trưa" --date YYYY-MM-DD`
+- Xóa giao dịch: `python /đường/dẫn/tuyệt/đối/finance.py delete --id ID`
 
 ## Quy tắc hội thoại
 
-- Hiểu yêu cầu tiếng Việt/Anh về tiền ăn, tiền thuê nhà, đi lại, học phí, tài liệu học tập, tiền sinh hoạt, lương và các danh mục khác.
-- Trước khi ghi, xác minh số tiền là số nguyên dương và hiểu rõ đó là khoản thu hay khoản chi. Nếu loại giao dịch, số tiền hoặc ngày chưa rõ, hãy hỏi một câu làm rõ thay vì tự đoán.
-- Nếu người dùng nói “hôm nay”, xác định ngày theo múi giờ đã cấu hình của người dùng và truyền ngày cụ thể bằng `--date YYYY-MM-DD`. Không tự diễn giải thời gian mơ hồ.
-- Chuẩn hóa danh mục ngắn gọn, nhưng hỏi lại nếu có thể làm thay đổi ý nghĩa. Không tự ghi giao dịch cho tới khi các trường bắt buộc đã rõ.
-- Sau khi thêm giao dịch, chỉ xác nhận thành công khi lệnh CLI trả về mã giao dịch; nhắc lại số tiền, loại, danh mục và ngày.
-- Khi báo cáo, luôn lấy số liệu bằng lệnh `summary`, `list` hoặc `budgets`; không tự cộng nhẩm nếu dữ liệu có thể truy vấn.
-- Nêu rõ tháng và đơn vị VND trong báo cáo. Phân biệt tổng thu, tổng chi, chênh lệch và ngân sách còn lại.
-- Không tuyên bố đã lưu nếu lệnh thất bại. Không xóa hoặc sửa hàng loạt giao dịch; hiện tại CLI cũng chưa có lệnh xóa/sửa.
+- Xác định rõ loại giao dịch (thu/chi), số tiền nguyên dương, danh mục và ngày. Nếu thiếu hoặc mơ hồ, hỏi lại trước khi ghi.
+- Khi người dùng nói “hôm nay”, xác định ngày theo múi giờ đã cấu hình và truyền ngày cụ thể bằng `--date YYYY-MM-DD`.
+- Trước khi sửa, đọc giao dịch hiện tại bằng lệnh `list` và xác nhận rõ giao dịch mục tiêu. Lệnh `update` yêu cầu truyền đủ loại, số tiền và danh mục; truyền rõ cả ngày để không vô tình đổi ngày sang hôm nay.
+- **Trước khi xóa bất kỳ giao dịch nào, phải cho người dùng xem ID, ngày, loại, số tiền và danh mục, rồi hỏi xác nhận rõ ràng.** Chỉ gọi `delete` sau khi được xác nhận.
+- Sau khi thêm/sửa/xóa, chỉ xác nhận thao tác thành công nếu CLI trả về thành công. Với giao dịch bị xóa, không được khẳng định đã xóa nếu ID không tồn tại.
+- Báo cáo phải được lấy từ lệnh `summary`, `list` hoặc `budgets`, nêu rõ tháng và đơn vị VND. Phân biệt tổng thu, tổng chi, chênh lệch và ngân sách còn lại.
 - Không yêu cầu mật khẩu ngân hàng, mã OTP hoặc toàn bộ thông tin thẻ.
+- Không tự chạy lệnh import CSV. Việc nhập CSV phải được người dùng thực hiện hoặc xác nhận cụ thể trong web app vì thao tác này thêm nhiều bản ghi và hiện chưa tự phát hiện giao dịch trùng.
 
-## Dữ liệu dùng chung và quyền riêng tư
+## Dữ liệu và quyền riêng tư
 
-CLI, dashboard web và skill dùng cùng database mặc định `~/.student-finance/student_finance.db`. Biến môi trường `STUDENT_FINANCE_DB` có thể ghi đè vị trí; tiến trình web và OpenClaw Gateway phải dùng cùng giá trị nếu được cấu hình lại.
+CLI, dashboard web và skill dùng chung database mặc định `~/.student-finance/student_finance.db`. Biến môi trường `STUDENT_FINANCE_DB` có thể thay đổi vị trí; web app và OpenClaw Gateway phải dùng cùng giá trị nếu có cấu hình riêng.
 
-Chương trình chỉ lưu dữ liệu giao dịch người dùng nhập. Không kết nối ngân hàng, không thực hiện thanh toán, không cho mô hình chạy truy vấn SQL tùy ý. Việc gọi script phụ thuộc công cụ thực thi lệnh được bật và giới hạn an toàn trong OpenClaw.
+Ứng dụng lưu dữ liệu cục bộ, không kết nối ngân hàng hoặc thực hiện thanh toán. Web app hiện chưa có xác thực và chỉ nên chạy trên máy cá nhân. Không để mô hình thực thi SQL trực tiếp.
