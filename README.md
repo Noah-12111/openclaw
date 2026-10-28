@@ -108,7 +108,7 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [
 - Sắp xếp mã nguồn của dự án thực hành thu–chi vào thư mục độc lập [examples/vi-sinh-vien/](examples/vi-sinh-vien/).
 
 ### [Ví Sinh Viên — Quản lý thu chi](examples/vi-sinh-vien/)
-Ứng dụng web demo giúp sinh viên ghi chép thu nhập, chi tiêu, xem tổng số dư, phân tích chi tiêu theo danh mục, đặt ngân sách theo tháng, sửa/xóa giao dịch và xuất/khôi phục dữ liệu CSV/JSON.
+Ứng dụng web demo giúp sinh viên ghi chép thu nhập, chi tiêu, xem tổng số dư, phân tích chi tiêu theo danh mục, đặt ngân sách theo tháng, sửa/xóa giao dịch và xuất/khôi phục dữ liệu CSV/JSON. Bản mới có trợ lý phân tích theo ngày/tháng/năm, gợi ý danh mục khi nhập giao dịch, so sánh kỳ liền trước, phát hiện mẫu chi tiêu có thể định kỳ và đưa ra gợi ý ngân sách bằng quy tắc cục bộ.
 
 **Cấu trúc mã nguồn:** `index.html`, `styles.css`, máy chủ `index.js`, cùng các module trong `src/`:
 - `main.js`: khởi động ứng dụng, gắn sự kiện và điều phối giao diện.
@@ -117,9 +117,10 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [
 - `storage.js`: lưu, đọc và xóa dữ liệu trong `localStorage`.
 - `finance.js`: tổng thu/chi, số dư, tỷ lệ tiết kiệm và nhóm chi tiêu.
 - `config.js`: danh mục giao dịch và cấu hình.
+- `assistant.js`: gợi ý danh mục, phân tích ngày/tháng/năm, so sánh xu hướng và gợi ý ngân sách theo quy tắc cục bộ.
 - `tests/input.test.js`: kiểm thử đầu vào bằng `node:test`.
 
-**Những công nghệ/API đã tận dụng:** HTML cho cấu trúc form và bảng; CSS cho dashboard responsive; JavaScript ES modules, DOM và event listeners cho logic giao dịch; `Intl.NumberFormat` cho tiền Việt Nam; `localStorage` để lưu dữ liệu cục bộ; `Blob`, `FileReader` và `URL.createObjectURL` cho xuất/nhập file; các module tích hợp sẵn của Node.js (`http`, `fs`, `path`, `url`) để chạy máy chủ trên localhost; GitHub fork và README để tổ chức mã nguồn, hướng dẫn chạy và theo dõi commit. Dự án không cần thư viện npm bên ngoài.
+**Những công nghệ/API đã tận dụng:** HTML cho cấu trúc form và bảng; CSS cho dashboard responsive; JavaScript ES modules, DOM và event listeners cho logic giao dịch; `Intl.NumberFormat` cho tiền Việt Nam; `localStorage` để lưu dữ liệu cục bộ; `Blob`, `FileReader` và `URL.createObjectURL` cho xuất/nhập file; các module tích hợp sẵn của Node.js (`http`, `fs`, `path`, `url`) để chạy máy chủ trên localhost; GitHub fork và README để tổ chức mã nguồn, hướng dẫn chạy và theo dõi commit. Dự án không cần thư viện npm bên ngoài. Trợ lý hiện là phân tích theo quy tắc chạy tại trình duyệt, chưa gọi mô hình AI hoặc OpenClaw Gateway.
 
 #### Chạy demo trên Windows / VS Code
 Mở thư mục `examples/vi-sinh-vien` trong VS Code, mở Terminal và chạy:
@@ -133,7 +134,7 @@ npm.cmd start
 
 Sau đó mở [http://127.0.0.1:5500](http://127.0.0.1:5500). Có thể bấm đúp `start.bat` để tự kiểm tra cú pháp và chạy ứng dụng. Dừng máy chủ bằng `Ctrl+C`.
 
-**Phạm vi hiện tại:** Đây là ứng dụng web độc lập; dữ liệu nằm trong trình duyệt hiện tại. Chưa có backend, đăng nhập, đồng bộ đám mây, kết nối ngân hàng hoặc tích hợp OpenClaw Gateway/AI. Các thay đổi README/banner và việc quản lý mã nguồn nằm trong fork; không nên hiểu nhầm app thu–chi là tính năng gốc của OpenClaw.
+**Phạm vi hiện tại:** Đây là ứng dụng web độc lập; dữ liệu nằm trong trình duyệt hiện tại. Trợ lý gợi ý theo quy tắc cục bộ, không phải mô hình AI tạo sinh. Chưa có backend, đăng nhập, đồng bộ đám mây, kết nối ngân hàng hoặc tích hợp OpenClaw Gateway/AI. Các thay đổi README/banner và việc quản lý mã nguồn nằm trong fork; không nên hiểu nhầm app thu–chi là tính năng gốc của OpenClaw.
 
 ---
 

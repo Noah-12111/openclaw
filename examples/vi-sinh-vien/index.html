@@ -25,6 +25,28 @@
       <article class="metric"><span>Tổng chi tiêu</span><strong id="expense-total" class="negative">0 ₫</strong><small>Tiền đã sử dụng</small></article>
       <article class="metric"><span>Tỷ lệ tiết kiệm</span><strong id="saving-rate">0%</strong><small>Trên tổng thu nhập</small></article>
     </section>
+    <section class="panel assistant-panel">
+      <div class="panel-heading">
+        <div><p class="eyebrow">PHÂN TÍCH THÔNG MINH</p><h2>Trợ lý chi tiêu thông minh</h2><p class="muted">Tự gợi ý danh mục, phát hiện xu hướng và đề xuất giới hạn chi tiêu từ dữ liệu cục bộ.</p></div>
+        <span class="assistant-badge">SMART INSIGHTS</span>
+      </div>
+      <div class="assistant-controls">
+        <label>Phân tích theo<select id="assistant-period"><option value="day">Ngày</option><option value="month" selected>Tháng</option><option value="year">Năm</option></select></label>
+        <label>Ngày mốc<input id="assistant-date" type="date"></label>
+        <button id="assistant-run" class="button primary" type="button">Phân tích</button>
+      </div>
+      <div class="assistant-kpis">
+        <div><span>Kỳ đang xem</span><strong id="assistant-range">—</strong></div>
+        <div><span>Thu nhập</span><strong class="positive" id="assistant-income">0 ₫</strong></div>
+        <div><span>Chi tiêu</span><strong class="negative" id="assistant-expense">0 ₫</strong></div>
+        <div><span>Số giao dịch</span><strong id="assistant-count">0</strong></div>
+      </div>
+      <div class="assistant-columns">
+        <div class="assistant-box"><h3>Nhận định</h3><ul id="assistant-insights"><li>Thêm giao dịch để nhận phân tích.</li></ul></div>
+        <div class="assistant-box recommendation-box"><h3>Gợi ý hành động</h3><ul id="assistant-recommendations"><li>Nhập dữ liệu thu chi và đặt ngân sách theo tháng.</li></ul></div>
+      </div>
+      <p class="assistant-footnote">Phân tích chạy ngay trên trình duyệt bằng quy tắc và dữ liệu bạn đã nhập; không gửi giao dịch ra ngoài. Đây là trợ lý phân tích theo quy tắc, chưa phải mô hình AI tạo sinh.</p>
+    </section>
     <section class="grid">
       <article class="panel">
         <div class="panel-heading"><div><h2>Thêm giao dịch</h2><p class="muted">Ghi lại một khoản thu hoặc chi.</p></div></div>
@@ -37,6 +59,7 @@
             <label>Số tiền (VNĐ)<input id="transaction-amount" type="number" min="1" step="1000" required placeholder="50000"></label>
             <label>Ngày<input id="transaction-date" type="date" required></label>
             <label class="wide">Ghi chú<input id="transaction-note" maxlength="200" placeholder="Không bắt buộc"></label>
+            <p id="category-auto-hint" class="input-hint wide" aria-live="polite">Nhập tên giao dịch để nhận gợi ý danh mục tự động.</p>
           </div>
           <div class="form-actions"><button id="save-transaction" class="button primary" type="submit">Lưu giao dịch</button><button id="cancel-edit" class="button secondary" type="button" hidden>Hủy sửa</button></div>
         </form>

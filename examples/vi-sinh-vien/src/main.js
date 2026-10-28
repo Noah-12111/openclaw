@@ -3,12 +3,15 @@ import { currentMonth, localDate, monthlySummary, expensesByCategory } from "./f
 import { validateTransactionInput, parseBackupData } from "./input.js";
 import { loadState, saveState, clearState } from "./storage.js";
 import { escapeHtml, formatMoney, transactionRow, downloadFile } from "./output.js";
+import { suggestCategory, analyzeSpending } from "./assistant.js";
 
 const $ = selector => document.querySelector(selector);
 const now = new Date();
 const monthNow = currentMonth(now);
 let state = loadState();
 let noticeTimer;
+let categoryManuallyChosen = false;
+let lastSuggestedCategory = "";
 
 function showNotice(message, error = false) {
   const notice = $("#notice");
@@ -32,6 +35,45 @@ function refreshCategories(selected = "") {
   const options = CATEGORIES[$("#transaction-type").value];
   $("#transaction-category").innerHTML = options.map(category => "<option value=\"" + escapeHtml(category) + "\"" + (category === selected ? " selected" : "") + ">" + escapeHtml(category) + "</option>").join("");
 }
+function applyCategorySuggestion() {
+  const hint = $("#category-auto-hint");
+  if (!hint) return;
+  const guess = suggestCategory($("#transaction-name").value + " " + $("#transaction-note").value, $("#transaction-type").value);
+  if (!guess) {
+    if (!categoryManuallyChosen && lastSuggestedCategory && $("#transaction-category").value === lastSuggestedCategory) $("#transaction-category").selectedIndex = 0;
+    lastSuggestedCategory = "";
+    hint.textContent = "Chưa nhận diện được danh mục; bạn có thể chọn thủ công.";
+    hint.classList.toggle("manual", categoryManuallyChosen);
+    return;
+  }
+  if (categoryManuallyChosen) {
+    hint.textContent = "Bạn đang chọn thủ công: " + $("#transaction-category").value + ".";
+    hint.classList.add("manual");
+    return;
+  }
+  const hasOption = Array.from($("#transaction-category").options).some(option => option.value === guess);
+  if (hasOption) {
+    $("#transaction-category").value = guess;
+    lastSuggestedCategory = guess;
+    hint.textContent = "Tự gợi ý danh mục: " + guess + ". Bạn vẫn có thể đổi nếu chưa đúng.";
+    hint.classList.remove("manual");
+  } else {
+    hint.textContent = "Gợi ý " + guess + " không có trong danh mục hiện tại; hãy chọn thủ công.";
+  }
+}
+function renderAssistant() {
+  const analysis = analyzeSpending(state.transactions, state.budgets, {
+    period: $("#assistant-period").value,
+    anchorDate: $("#assistant-date").value || localDate(new Date())
+  });
+  $("#assistant-range").textContent = analysis.title;
+  $("#assistant-income").textContent = formatMoney(analysis.income);
+  $("#assistant-expense").textContent = formatMoney(analysis.expense);
+  $("#assistant-count").textContent = String(analysis.transactions);
+  $("#assistant-insights").innerHTML = analysis.insights.map(item => "<li>" + escapeHtml(item) + "</li>").join("");
+  $("#assistant-recommendations").innerHTML = analysis.recommendations.map(item => "<li>" + escapeHtml(item) + "</li>").join("");
+}
+
 function renderSummary() {
   const summary = monthlySummary(selectedMonthItems());
   $("#balance-total").textContent = formatMoney(summary.balance);
@@ -77,13 +119,16 @@ function renderTransactions() {
   $("#transactions-empty").hidden = items.length > 0;
   $("#transaction-count").textContent = items.length + " giao dịch";
 }
-function renderAll() { renderSummary(); renderTransactions(); }
+function renderAll() { renderSummary(); renderTransactions(); renderAssistant(); }
 function resetTransactionForm() {
   $("#transaction-form").reset();
+  categoryManuallyChosen = false;
+  lastSuggestedCategory = "";
   $("#transaction-id").value = "";
   $("#transaction-date").value = localDate(now);
   $("#transaction-type").value = "expense";
   refreshCategories();
+  applyCategorySuggestion();
   $("#save-transaction").textContent = "Lưu giao dịch";
   $("#cancel-edit").hidden = true;
 }
@@ -155,9 +200,15 @@ function importBackup(file) {
 }
 function bindEvents() {
   $("#transaction-form").addEventListener("submit", onTransactionSubmit);
-  $("#transaction-type").addEventListener("change", () => refreshCategories());
+  $("#transaction-type").addEventListener("change", () => { categoryManuallyChosen = false; lastSuggestedCategory = ""; refreshCategories(); applyCategorySuggestion(); });
+  $("#transaction-category").addEventListener("change", () => { categoryManuallyChosen = true; lastSuggestedCategory = ""; $("#category-auto-hint").textContent = "Bạn đã chọn danh mục thủ công: " + $("#transaction-category").value + "."; $("#category-auto-hint").classList.add("manual"); });
+  $("#transaction-name").addEventListener("input", applyCategorySuggestion);
+  $("#transaction-note").addEventListener("input", applyCategorySuggestion);
   $("#cancel-edit").addEventListener("click", resetTransactionForm);
   $("#month-select").addEventListener("change", renderSummary);
+  $("#assistant-run").addEventListener("click", renderAssistant);
+  $("#assistant-period").addEventListener("change", renderAssistant);
+  $("#assistant-date").addEventListener("change", renderAssistant);
   $("#budget-month").addEventListener("change", renderBudget);
   $("#budget-form").addEventListener("submit", event => {
     event.preventDefault();
@@ -180,7 +231,7 @@ function bindEvents() {
   });
 }
 function init() {
-  $("#month-select").value = monthNow; $("#budget-month").value = monthNow; $("#transaction-date").value = localDate(now);
+  $("#month-select").value = monthNow; $("#budget-month").value = monthNow; $("#assistant-date").value = localDate(now); $("#transaction-date").value = localDate(now);
   refreshCategories(); bindEvents(); renderAll();
 }
 init();
