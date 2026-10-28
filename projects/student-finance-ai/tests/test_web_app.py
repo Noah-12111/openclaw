@@ -111,7 +111,6 @@ class WebAppTests(unittest.TestCase):
         _, export_text = self.request_json("/api/export.csv?month=2026-10")
         self.assertIn("transaction_date,kind,amount_vnd,category,note", export_text)
         self.assertIn("45000", export_text)
-        self.assertIn("Content", "")  # response parsing handled by request_json
 
     def test_csv_import_rejects_malformed_data_without_partial_write(self):
         csv_data = "transaction_date,kind,amount_vnd,category,note\n2026-10-28,expense,45000,food,Lunch\n2026-99-99,expense,100,food,Bad\n"
