@@ -21,6 +21,7 @@ class FinanceTests(unittest.TestCase):
         with self.assertRaises(ValueError): add_transaction(self.conn,"transfer",1000,"food")
     def test_rejects_invalid_date_and_month(self):
         with self.assertRaises(ValueError): add_transaction(self.conn,"expense",1000,"food",transaction_date="yesterday")
+        with self.assertRaises(ValueError): add_transaction(self.conn,"expense",1000,"food",transaction_date="20261028")
         with self.assertRaises(ValueError): monthly_summary(self.conn,"2026-13")
     def test_budget_upsert_and_spending(self):
         add_transaction(self.conn,"expense",120000,"food",transaction_date="2026-10-05")
