@@ -6,7 +6,9 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Optional
 
-DEFAULT_DB = "student_finance.db"
+# A stable per-user location means the CLI, web app, and an installed OpenClaw
+# skill all use the same database even when started from different directories.
+DEFAULT_DB = str(Path.home() / ".student-finance" / "student_finance.db")
 
 def db_path() -> Path:
     return Path(os.environ.get("STUDENT_FINANCE_DB", DEFAULT_DB)).expanduser()
@@ -57,8 +59,9 @@ def next_month(month: str) -> str:
 def add_transaction(conn: sqlite3.Connection, kind: str, amount_vnd: int, category: str,
                     note: str = "", transaction_date: Optional[str] = None) -> int:
     if kind not in ("income", "expense"): raise ValueError("Type must be income or expense.")
-    if isinstance(amount_vnd, bool) or amount_vnd <= 0: raise ValueError("Amount must be a positive integer number of VND.")
-    if not category or not category.strip(): raise ValueError("Category cannot be empty.")
+    if type(amount_vnd) is not int or amount_vnd <= 0: raise ValueError("Amount must be a positive integer number of VND.")
+    if not isinstance(category, str) or not category.strip(): raise ValueError("Category cannot be empty.")
+    if not isinstance(note, str): raise ValueError("Note must be a string.")
     tx_date = validate_date(transaction_date or date.today().isoformat())
     cur = conn.execute("INSERT INTO transactions(kind,amount_vnd,category,note,transaction_date) VALUES(?,?,?,?,?)",
                        (kind, amount_vnd, category.strip(), note.strip(), tx_date))
@@ -87,8 +90,8 @@ def monthly_summary(conn: sqlite3.Connection, month: str) -> dict:
 
 def set_budget(conn: sqlite3.Connection, month: str, category: str, amount_vnd: int) -> None:
     validate_month(month)
-    if not category or not category.strip(): raise ValueError("Category cannot be empty.")
-    if isinstance(amount_vnd, bool) or amount_vnd <= 0: raise ValueError("Budget must be a positive integer number of VND.")
+    if not isinstance(category, str) or not category.strip(): raise ValueError("Category cannot be empty.")
+    if type(amount_vnd) is not int or amount_vnd <= 0: raise ValueError("Budget must be a positive integer number of VND.")
     conn.execute("INSERT INTO budgets(month,category,amount_vnd) VALUES(?,?,?) ON CONFLICT(month,category) DO UPDATE SET amount_vnd=excluded.amount_vnd",
                  (month, category.strip(), amount_vnd))
     conn.commit()
