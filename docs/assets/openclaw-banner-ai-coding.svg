@@ -1,60 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
-  <title id="title">OpenClaw — Trợ lý AI hỗ trợ lập trình</title>
-  <desc id="desc">Tôm hùm robot màu san hô với màn hình mã nguồn, cạnh chữ OpenClaw trên nền công nghệ xanh đậm.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="450" viewBox="0 0 1600 450" role="img" aria-labelledby="title desc">
+  <title id="title">OpenClaw — Trợ lý AI cá nhân</title>
+  <desc id="desc">Biểu tượng tôm hùm robot màu san hô bên cạnh thương hiệu OpenClaw và khẩu hiệu EXFOLIATE! EXFOLIATE!</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#07152d"/><stop offset=".55" stop-color="#061c38"/><stop offset="1" stop-color="#071329"/>
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f6f7fa"/>
     </linearGradient>
     <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ff9467"/><stop offset=".52" stop-color="#ff5357"/><stop offset="1" stop-color="#e83b56"/>
+      <stop offset="0" stop-color="#ff7865"/>
+      <stop offset=".55" stop-color="#ff4d45"/>
+      <stop offset="1" stop-color="#e93e43"/>
     </linearGradient>
-    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-      <path d="M80 0H0V80" fill="none" stroke="#164065" stroke-width="1.4" opacity=".6"/>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#ff7665" stop-opacity=".17"/>
+      <stop offset="1" stop-color="#ff7665" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#d9dee7"/>
     </pattern>
-    <filter id="cyanGlow" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <filter id="softShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="9" stdDeviation="10" flood-color="#a52b2b" flood-opacity=".13"/>
     </filter>
   </defs>
-  <rect width="1600" height="900" fill="url(#background)"/>
-  <rect width="1600" height="900" fill="url(#grid)"/>
-  <g fill="none" stroke="#05c9f7" stroke-width="4" stroke-linecap="round">
-    <path d="M50 170V82H320"/><path d="M1350 820H1540V735"/>
+
+  <rect width="1600" height="450" rx="18" fill="url(#background)"/>
+  <rect width="1600" height="450" rx="18" fill="url(#dots)" opacity=".42"/>
+  <ellipse cx="315" cy="225" rx="260" ry="220" fill="url(#halo)"/>
+  <circle cx="1480" cy="65" r="155" fill="#fff1ee" opacity=".72"/>
+  <path d="M0 410 C280 380 450 470 690 430 S1180 380 1600 420" fill="none" stroke="#f1e4e3" stroke-width="2"/>
+  <path d="M64 68h42M85 47v42M1510 365h28M1524 351v28" stroke="#ff8b7a" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+
+  <g transform="translate(315 226)" filter="url(#softShadow)">
+    <!-- antennae -->
+    <path d="M-35 -103C-53 -142 -81 -154 -102 -149M35 -103C53 -142 81 -154 102 -149" fill="none" stroke="#ff6256" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="-103" cy="-149" r="7" fill="#ff6256"/>
+    <circle cx="103" cy="-149" r="7" fill="#ff6256"/>
+
+    <!-- arms and claws -->
+    <path d="M-77 -62C-117 -89 -154 -79 -170 -51C-184 -28 -169 -4 -146 -6L-124 -27C-117 -40 -104 -37 -96 -24Z" fill="url(#shell)"/>
+    <path d="M-168 -41C-192 -38 -204 -20 -194 -2C-185 15 -163 14 -151 1L-158 -17C-170 -17 -175 -27 -168 -41Z" fill="#ff6857"/>
+    <path d="M77 -62C117 -89 154 -79 170 -51C184 -28 169 -4 146 -6L124 -27C117 -40 104 -37 96 -24Z" fill="url(#shell)"/>
+    <path d="M168 -41C192 -38 204 -20 194 -2C185 15 163 14 151 1L158 -17C170 -17 175 -27 168 -41Z" fill="#ff6857"/>
+
+    <!-- legs -->
+    <path d="M-63 48L-93 79L-79 88L-42 64M63 48L93 79L79 88L42 64" fill="none" stroke="#ef4748" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-38 60L-45 87L-25 91L-11 66M38 60L45 87L25 91L11 66" fill="none" stroke="#ef4748" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- shell -->
+    <path d="M-91 -49C-100 -103 -63 -137 0 -139C63 -137 100 -103 91 -49L79 14C73 49 39 68 0 72C-39 68 -73 49 -79 14Z" fill="url(#shell)"/>
+    <path d="M-66 -94C-47 -116 -25 -123 0 -124C25 -123 47 -116 66 -94" fill="none" stroke="#ffad93" stroke-width="7" stroke-linecap="round" opacity=".76"/>
+
+    <!-- eyes -->
+    <ellipse cx="-34" cy="-76" rx="20" ry="23" fill="#172332"/>
+    <ellipse cx="34" cy="-76" rx="20" ry="23" fill="#172332"/>
+    <circle cx="-34" cy="-77" r="8.5" fill="#24e0dc"/>
+    <circle cx="34" cy="-77" r="8.5" fill="#24e0dc"/>
+    <circle cx="-37" cy="-81" r="2.5" fill="#ffffff"/>
+    <circle cx="31" cy="-81" r="2.5" fill="#ffffff"/>
+
+    <!-- lower body and feet -->
+    <path d="M-57 23C-42 42 -22 49 0 51C22 49 42 42 57 23L48 55C34 70 17 76 0 77C-17 76 -34 70 -48 55Z" fill="#f84c49"/>
+    <path d="M-36 80V100Q-36 106 -30 106H-15Q-9 106 -9 100V83M9 83V100Q9 106 15 106H30Q36 106 36 100V80" fill="#ef4748"/>
   </g>
-  <g fill="#05c9f7" opacity=".85">
-    <rect x="82" y="104" width="12" height="12"/><rect x="106" y="104" width="12" height="12"/><rect x="130" y="104" width="12" height="12"/>
-    <path d="M770 180h22v4h-22zM779 171h4v22h-4zM1455 305h22v4h-22zM1464 296h4v22h-4z" opacity=".55"/>
-    <path d="M60 785l28-36h28l-28 36zM104 785l28-36h28l-28 36z"/>
-  </g>
-  <g fill="#ff5d55"><rect x="1485" y="790" width="12" height="12"/><rect x="1510" y="790" width="12" height="12"/><rect x="1535" y="790" width="12" height="12"/></g>
-  <g transform="translate(355 420)">
-    <path d="M-47 -128C-65 -214 -117 -239 -148 -218M48 -128C64 -211 112 -239 150 -218" fill="none" stroke="url(#shell)" stroke-width="13" stroke-linecap="round"/>
-    <path d="M-104 -151C-151 -174 -204 -157 -220 -112C-232 -77 -215 -40 -184 -27L-163 -52C-184 -71 -181 -96 -165 -111C-148 -126 -126 -127 -104 -114Z" fill="url(#shell)"/>
-    <path d="M-199 -94C-215 -76 -222 -58 -216 -43C-206 -17 -178 -10 -158 -26L-170 -53C-182 -49 -190 -61 -183 -72Z" fill="#ff765d"/>
-    <path d="M104 -151C151 -174 204 -157 220 -112C232 -77 215 -40 184 -27L163 -52C184 -71 181 -96 165 -111C148 -126 126 -127 104 -114Z" fill="url(#shell)"/>
-    <path d="M199 -94C215 -76 222 -58 216 -43C206 -17 178 -10 158 -26L170 -53C182 -49 190 -61 183 -72Z" fill="#ff765d"/>
-    <path d="M-133 -27C-159 2 -160 33 -144 55L-113 41L-104 0ZM133 -27C159 2 160 33 144 55L113 41L104 0Z" fill="#fa4c55"/>
-    <circle cx="-130" cy="28" r="17" fill="#ff815f"/><circle cx="130" cy="28" r="17" fill="#ff815f"/>
-    <path d="M-91 -124C-87 -174 -45 -207 0 -207C45 -207 87 -174 91 -124L101 -61C103 -43 87 -29 67 -29H-67C-87 -29 -103 -43 -101 -61Z" fill="url(#shell)"/>
-    <path d="M-78 -146C-48 -178 -26 -183 0 -183C26 -183 48 -178 78 -146" fill="none" stroke="#ffb08a" stroke-width="6" opacity=".55"/>
-    <ellipse cx="-43" cy="-117" rx="24" ry="30" fill="#07152b"/><ellipse cx="43" cy="-117" rx="24" ry="30" fill="#07152b"/>
-    <circle cx="-43" cy="-117" r="10" fill="#10e3f2" filter="url(#cyanGlow)"/><circle cx="43" cy="-117" r="10" fill="#10e3f2" filter="url(#cyanGlow)"/>
-    <path d="M-72 -21C-89 15 -73 47 0 59C73 47 89 15 72 -21Z" fill="#ff755d"/>
-    <path d="M-58 42C-56 78 -28 98 0 100C28 98 56 78 58 42" fill="#f84d56" stroke="#ff8b69" stroke-width="5"/>
-    <path d="M-38 97C-35 125 -18 145 0 154C18 145 35 125 38 97Z" fill="url(#shell)"/>
-    <path d="M-20 132L0 164L20 132" fill="#ff715b"/>
-    <rect x="-90" y="-12" width="180" height="136" rx="30" fill="#00bce9" opacity=".27"/>
-    <rect x="-82" y="-4" width="164" height="120" rx="25" fill="#081d38" stroke="#08d7f6" stroke-width="8"/>
-    <circle cx="-56" cy="18" r="5.5" fill="#08d7f6" opacity=".85"/><circle cx="-38" cy="18" r="5.5" fill="#08d7f6" opacity=".45"/>
-    <path d="M-25 49L-50 69L-25 89M25 49L50 69L25 89M9 43L-8 95" fill="none" stroke="#08d7f6" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M-144 54L-134 70L-115 61M144 54L134 70L115 61" fill="none" stroke="#ffb083" stroke-width="7" stroke-linecap="round"/>
-  </g>
+
   <g font-family="Inter, Segoe UI, Arial, sans-serif">
-    <text x="690" y="370" font-size="122" font-weight="800" letter-spacing="-5" fill="#f8fbff">Open<tspan fill="#ff5c54">Claw</tspan></text>
-    <text x="700" y="462" font-size="32" font-weight="700" letter-spacing="3.8" fill="#f6f9ff">TRỢ LÝ AI HỖ TRỢ LẬP TRÌNH</text>
-    <path d="M702 506H1467" stroke="#164e70" stroke-width="2"/>
-    <circle cx="711" cy="551" r="6" fill="#04d6f5"/>
-    <text x="735" y="560" font-size="25" font-weight="600" letter-spacing="2.6" fill="#04d6f5">CỤC BỘ + ĐÁM MÂY · MÃ NGUỒN MỞ</text>
-    <g transform="translate(1412 180) skewX(-24)"><rect width="40" height="12" fill="#00c8f2"/><rect x="54" width="40" height="12" fill="#0875b2"/><rect x="108" width="40" height="12" fill="#ff5c54"/></g>
+    <text x="600" y="224" font-size="108" font-weight="800" letter-spacing="-4.5" fill="#111318">Open<tspan fill="#ff5149">Claw</tspan></text>
+    <text x="610" y="289" font-size="28" font-weight="700" letter-spacing="5.6" fill="#ff5149">EXFOLIATE! EXFOLIATE!</text>
+    <text x="612" y="337" font-size="25" font-weight="500" fill="#686d77">Your personal AI assistant, running on your own devices.</text>
+    <path d="M612 369H970" stroke="#f4c7c1" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="988" cy="369" r="4" fill="#ff5149"/>
   </g>
 </svg>
