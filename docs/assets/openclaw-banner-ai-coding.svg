@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">OpenClaw — Trợ lý AI hỗ trợ lập trình</title>
+  <desc id="desc">Tôm hùm robot màu san hô với màn hình mã nguồn, cạnh chữ OpenClaw trên nền công nghệ xanh đậm.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07152d"/><stop offset=".55" stop-color="#061c38"/><stop offset="1" stop-color="#071329"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff9467"/><stop offset=".52" stop-color="#ff5357"/><stop offset="1" stop-color="#e83b56"/>
+    </linearGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#164065" stroke-width="1.4" opacity=".6"/>
+    </pattern>
+    <filter id="cyanGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#background)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <g fill="none" stroke="#05c9f7" stroke-width="4" stroke-linecap="round">
+    <path d="M50 170V82H320"/><path d="M1350 820H1540V735"/>
+  </g>
+  <g fill="#05c9f7" opacity=".85">
+    <rect x="82" y="104" width="12" height="12"/><rect x="106" y="104" width="12" height="12"/><rect x="130" y="104" width="12" height="12"/>
+    <path d="M770 180h22v4h-22zM779 171h4v22h-4zM1455 305h22v4h-22zM1464 296h4v22h-4z" opacity=".55"/>
+    <path d="M60 785l28-36h28l-28 36zM104 785l28-36h28l-28 36z"/>
+  </g>
+  <g fill="#ff5d55"><rect x="1485" y="790" width="12" height="12"/><rect x="1510" y="790" width="12" height="12"/><rect x="1535" y="790" width="12" height="12"/></g>
+  <g transform="translate(355 420)">
+    <path d="M-47 -128C-65 -214 -117 -239 -148 -218M48 -128C64 -211 112 -239 150 -218" fill="none" stroke="url(#shell)" stroke-width="13" stroke-linecap="round"/>
+    <path d="M-104 -151C-151 -174 -204 -157 -220 -112C-232 -77 -215 -40 -184 -27L-163 -52C-184 -71 -181 -96 -165 -111C-148 -126 -126 -127 -104 -114Z" fill="url(#shell)"/>
+    <path d="M-199 -94C-215 -76 -222 -58 -216 -43C-206 -17 -178 -10 -158 -26L-170 -53C-182 -49 -190 -61 -183 -72Z" fill="#ff765d"/>
+    <path d="M104 -151C151 -174 204 -157 220 -112C232 -77 215 -40 184 -27L163 -52C184 -71 181 -96 165 -111C148 -126 126 -127 104 -114Z" fill="url(#shell)"/>
+    <path d="M199 -94C215 -76 222 -58 216 -43C206 -17 178 -10 158 -26L170 -53C182 -49 190 -61 183 -72Z" fill="#ff765d"/>
+    <path d="M-133 -27C-159 2 -160 33 -144 55L-113 41L-104 0ZM133 -27C159 2 160 33 144 55L113 41L104 0Z" fill="#fa4c55"/>
+    <circle cx="-130" cy="28" r="17" fill="#ff815f"/><circle cx="130" cy="28" r="17" fill="#ff815f"/>
+    <path d="M-91 -124C-87 -174 -45 -207 0 -207C45 -207 87 -174 91 -124L101 -61C103 -43 87 -29 67 -29H-67C-87 -29 -103 -43 -101 -61Z" fill="url(#shell)"/>
+    <path d="M-78 -146C-48 -178 -26 -183 0 -183C26 -183 48 -178 78 -146" fill="none" stroke="#ffb08a" stroke-width="6" opacity=".55"/>
+    <ellipse cx="-43" cy="-117" rx="24" ry="30" fill="#07152b"/><ellipse cx="43" cy="-117" rx="24" ry="30" fill="#07152b"/>
+    <circle cx="-43" cy="-117" r="10" fill="#10e3f2" filter="url(#cyanGlow)"/><circle cx="43" cy="-117" r="10" fill="#10e3f2" filter="url(#cyanGlow)"/>
+    <path d="M-72 -21C-89 15 -73 47 0 59C73 47 89 15 72 -21Z" fill="#ff755d"/>
+    <path d="M-58 42C-56 78 -28 98 0 100C28 98 56 78 58 42" fill="#f84d56" stroke="#ff8b69" stroke-width="5"/>
+    <path d="M-38 97C-35 125 -18 145 0 154C18 145 35 125 38 97Z" fill="url(#shell)"/>
+    <path d="M-20 132L0 164L20 132" fill="#ff715b"/>
+    <rect x="-90" y="-12" width="180" height="136" rx="30" fill="#00bce9" opacity=".27"/>
+    <rect x="-82" y="-4" width="164" height="120" rx="25" fill="#081d38" stroke="#08d7f6" stroke-width="8"/>
+    <circle cx="-56" cy="18" r="5.5" fill="#08d7f6" opacity=".85"/><circle cx="-38" cy="18" r="5.5" fill="#08d7f6" opacity=".45"/>
+    <path d="M-25 49L-50 69L-25 89M25 49L50 69L25 89M9 43L-8 95" fill="none" stroke="#08d7f6" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-144 54L-134 70L-115 61M144 54L134 70L115 61" fill="none" stroke="#ffb083" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="690" y="370" font-size="122" font-weight="800" letter-spacing="-5" fill="#f8fbff">Open<tspan fill="#ff5c54">Claw</tspan></text>
+    <text x="700" y="462" font-size="32" font-weight="700" letter-spacing="3.8" fill="#f6f9ff">TRỢ LÝ AI HỖ TRỢ LẬP TRÌNH</text>
+    <path d="M702 506H1467" stroke="#164e70" stroke-width="2"/>
+    <circle cx="711" cy="551" r="6" fill="#04d6f5"/>
+    <text x="735" y="560" font-size="25" font-weight="600" letter-spacing="2.6" fill="#04d6f5">CỤC BỘ + ĐÁM MÂY · MÃ NGUỒN MỞ</text>
+    <g transform="translate(1412 180) skewX(-24)"><rect width="40" height="12" fill="#00c8f2"/><rect x="54" width="40" height="12" fill="#0875b2"/><rect x="108" width="40" height="12" fill="#ff5c54"/></g>
+  </g>
+</svg>
