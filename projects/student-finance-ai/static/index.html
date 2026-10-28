@@ -415,12 +415,13 @@
 
   $("transaction-form").addEventListener("submit", async (event) => {
     event.preventDefault();
+    const formElement = event.currentTarget;
     const button = $("save-transaction"); button.disabled = true;
-    const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const payload = Object.fromEntries(new FormData(formElement).entries());
     payload.amount_vnd = Number(payload.amount_vnd);
     try {
       const result = await request("/api/transactions", { method:"POST", body:JSON.stringify(payload) });
-      event.currentTarget.reset(); $("transaction_date").value = localDate();
+      formElement.reset(); $("transaction_date").value = localDate();
       $("month").value = payload.transaction_date.slice(0, 7);
       $("search").value = ""; $("kind-filter").value = ""; $("category-filter").value = "";
       setStatus("Đã lưu giao dịch #" + result.id + ".", "ok");
