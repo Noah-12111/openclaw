@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>SpendWise — Quản lý thu chi sinh viên</title>
+  <style>
+    :root { color-scheme: light; --ink:#172b4d; --muted:#667085; --line:#e4e7ec; --paper:#f5f7fb; --card:#fff; --blue:#2458d3; --green:#137a54; --red:#c0394a; --gold:#f2b84b; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--paper); color:var(--ink); }
+    header { background:#102447; color:#fff; padding:24px max(20px,calc((100vw - 1180px)/2)); display:flex; gap:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .brand { display:flex; gap:12px; align-items:center; }
+    .logo { display:grid; place-items:center; width:44px; height:44px; border-radius:14px; background:#d9e8ff; color:#173d91; font-weight:900; font-size:22px; }
+    h1 { font-size:22px; margin:0; letter-spacing:-.03em; }
+    .subtitle { margin:4px 0 0; color:#c3d1e8; font-size:13px; }
+    .month-picker { display:flex; align-items:center; gap:10px; color:#dce6f5; font-size:13px; }
+    input,select,button { font:inherit; }
+    input,select { width:100%; border:1px solid #cfd6e4; border-radius:10px; background:#fff; padding:11px 12px; color:var(--ink); outline:none; }
+    input:focus,select:focus { border-color:var(--blue); box-shadow:0 0 0 3px #2458d31b; }
+    .month-picker input { width:auto; min-width:160px; }
+    main { max-width:1180px; margin:24px auto 48px; padding:0 20px; }
+    .status { min-height:22px; color:var(--muted); font-size:13px; margin-bottom:12px; }
+    .status.error { color:var(--red); }
+    .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:20px; }
+    .card,.panel { border:1px solid var(--line); background:var(--card); border-radius:16px; box-shadow:0 5px 18px #172b4d08; }
+    .card { padding:20px; }
+    .card-label { color:var(--muted); font-size:13px; }
+    .card-value { margin-top:9px; font-size:clamp(21px,3vw,29px); font-weight:750; letter-spacing:-.035em; overflow-wrap:anywhere; }
+    .card small { display:block; color:var(--muted); margin-top:8px; }
+    .green { color:var(--green); } .red { color:var(--red); }
+    .layout { display:grid; grid-template-columns:minmax(280px,.8fr) minmax(0,1.4fr); gap:18px; align-items:start; }
+    .stack { display:grid; gap:18px; }
+    .panel { padding:20px; min-width:0; }
+    h2 { font-size:16px; margin:0 0 17px; letter-spacing:-.02em; }
+    .form-grid { display:grid; gap:12px; }
+    .field { display:grid; gap:6px; }
+    label { font-size:12px; color:#475467; font-weight:650; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    button { border:0; border-radius:10px; padding:12px 14px; background:var(--blue); color:white; font-weight:700; cursor:pointer; }
+    button:hover { filter:brightness(1.05); } button:disabled { opacity:.6; cursor:wait; }
+    .hint { color:var(--muted); font-size:12px; line-height:1.5; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; text-align:left; font-size:13px; white-space:nowrap; }
+    th { color:var(--muted); font-size:11px; letter-spacing:.04em; text-transform:uppercase; font-weight:700; }
+    th,td { padding:12px 10px; border-bottom:1px solid #edf0f5; }
+    th:first-child,td:first-child { padding-left:0; } th:last-child,td:last-child { padding-right:0; }
+    td.note { white-space:normal; min-width:100px; max-width:180px; color:var(--muted); }
+    .type { display:inline-flex; border-radius:50px; padding:4px 8px; font-size:11px; font-weight:700; }
+    .type.income { color:var(--green); background:#e7f6ef; } .type.expense { color:var(--red); background:#fff0f1; }
+    .empty { padding:24px 0; color:var(--muted); text-align:center; font-size:13px; }
+    .budget { padding:12px 0; border-bottom:1px solid #edf0f5; } .budget:last-child { border-bottom:0; padding-bottom:0; }
+    .budget-line { display:flex; gap:12px; justify-content:space-between; align-items:baseline; font-size:13px; }
+    .budget-title { font-weight:700; } .budget-numbers { color:var(--muted); font-size:12px; text-align:right; }
+    .bar { margin:9px 0 5px; height:7px; border-radius:8px; background:#edf0f5; overflow:hidden; }
+    .bar span { display:block; height:100%; background:#2f70e8; border-radius:8px; }
+    .bar span.over { background:var(--red); }
+    .budget-foot { color:var(--muted); font-size:12px; }
+    .category-row { display:flex; justify-content:space-between; gap:12px; font-size:13px; margin:13px 0; }
+    footer { color:#7b8496; text-align:center; font-size:12px; padding:0 20px 24px; }
+    @media(max-width:860px) { .layout { grid-template-columns:1fr; } }
+    @media(max-width:560px) { header { padding:20px; } main { margin-top:16px; padding:0 12px; } .cards { gap:8px; } .card { padding:13px; border-radius:12px; } .card-label { font-size:11px; } .card-value { font-size:19px; } .card small { font-size:10px; } .panel { padding:15px; } .month-picker { width:100%; justify-content:space-between; } .month-picker input { flex:1; min-width:0; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">₫</div>
+      <div><h1>SpendWise</h1><p class="subtitle">Quản lý thu chi sinh viên · dữ liệu lưu trên máy của bạn</p></div>
+    </div>
+    <div class="month-picker"><label for="month" style="color:inherit">Tháng báo cáo</label><input id="month" type="month" aria-label="Chọn tháng báo cáo"></div>
+  </header>
+  <main>
+    <div id="status" class="status" role="status" aria-live="polite">Đang tải dữ liệu…</div>
+    <section class="cards" aria-label="Tổng quan tháng">
+      <article class="card"><div class="card-label">Tổng thu</div><div id="income" class="card-value green">—</div><small>Trong tháng đang chọn</small></article>
+      <article class="card"><div class="card-label">Tổng chi</div><div id="expenses" class="card-value red">—</div><small id="tx-count">— giao dịch</small></article>
+      <article class="card"><div class="card-label">Chênh lệch thu – chi</div><div id="balance" class="card-value">—</div><small>Thu trừ chi</small></article>
+    </section>
+    <div class="layout">
+      <div class="stack">
+        <section class="panel">
+          <h2>Thêm giao dịch</h2>
+          <form id="transaction-form" class="form-grid">
+            <div class="two-col">
+              <div class="field"><label for="kind">Loại giao dịch</label><select id="kind" name="kind"><option value="expense">Khoản chi</option><option value="income">Khoản thu</option></select></div>
+              <div class="field"><label for="amount">Số tiền (VND)</label><input id="amount" name="amount_vnd" type="number" min="1" step="1" placeholder="45000" required></div>
+            </div>
+            <div class="field"><label for="category">Danh mục</label><input id="category" name="category" list="categories" placeholder="Ví dụ: ăn uống" required><datalist id="categories"><option value="food"><option value="rent"><option value="transport"><option value="tuition"><option value="study materials"><option value="health"><option value="entertainment"><option value="allowance"><option value="salary"><option value="other"></datalist></div>
+            <div class="field"><label for="transaction_date">Ngày giao dịch</label><input id="transaction_date" name="transaction_date" type="date" required></div>
+            <div class="field"><label for="note">Ghi chú (không bắt buộc)</label><input id="note" name="note" maxlength="500" placeholder="Ví dụ: ăn trưa ở trường"></div>
+            <button id="save-transaction" type="submit">Lưu giao dịch</button>
+            <div class="hint">Hãy kiểm tra loại giao dịch, số tiền và ngày trước khi lưu.</div>
+          </form>
+        </section>
+        <section class="panel">
+          <h2>Thiết lập ngân sách</h2>
+          <form id="budget-form" class="form-grid">
+            <div class="field"><label for="budget-category">Danh mục</label><input id="budget-category" name="category" placeholder="food" required></div>
+            <div class="field"><label for="budget-amount">Giới hạn tháng (VND)</label><input id="budget-amount" name="amount_vnd" type="number" min="1" step="1" placeholder="1000000" required></div>
+            <button id="save-budget" type="submit">Lưu ngân sách</button>
+          </form>
+        </section>
+      </div>
+      <div class="stack">
+        <section class="panel">
+          <h2>Giao dịch gần đây</h2>
+          <div class="table-wrap"><table><thead><tr><th>Ngày</th><th>Loại</th><th>Danh mục</th><th>Ghi chú</th><th style="text-align:right">Số tiền</th></tr></thead><tbody id="transactions"></tbody></table></div>
+          <div id="transactions-empty" class="empty" hidden>Chưa có giao dịch trong tháng này.</div>
+        </section>
+        <section class="panel">
+          <h2>Ngân sách theo danh mục</h2>
+          <div id="budgets"></div>
+          <div id="budgets-empty" class="empty" hidden>Chưa đặt ngân sách cho tháng này.</div>
+        </section>
+        <section class="panel">
+          <h2>Các khoản chi theo danh mục</h2>
+          <div id="categories"></div>
+          <div id="categories-empty" class="empty" hidden>Chưa có khoản chi trong tháng này.</div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer>SpendWise · SQLite cục bộ · Web app và skill OpenClaw dùng chung dữ liệu</footer>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const localDate = () => {
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  };
+  const money = (amount) => new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 }).format(amount) + " ₫";
+  const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+  function setStatus(message, error = false) { $("status").textContent = message; $("status").classList.toggle("error", error); }
+  async function api(path, options = {}) {
+    const response = await fetch(path, { cache: "no-store", ...options, headers: { ...(options.headers || {}), ...(options.body ? { "Content-Type": "application/json" } : {}) } });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error || "Không thể xử lý yêu cầu.");
+    return body;
+  }
+  function selectedMonth() { return $("month").value; }
+  async function loadAll() {
+    const month = selectedMonth();
+    if (!month) return;
+    setStatus("Đang đồng bộ dữ liệu…");
+    try {
+      const [summary, tx, budgets] = await Promise.all([
+        api("/api/summary?month=" + encodeURIComponent(month)),
+        api("/api/transactions?month=" + encodeURIComponent(month) + "&limit=1000"),
+        api("/api/budgets?month=" + encodeURIComponent(month))
+      ]);
+      $("income").textContent = money(summary.income_vnd);
+      $("expenses").textContent = money(summary.expenses_vnd);
+      $("balance").textContent = money(summary.balance_vnd);
+      $("balance").className = "card-value " + (summary.balance_vnd < 0 ? "red" : "green");
+      $("tx-count").textContent = summary.transaction_count + " giao dịch trong tháng";
+      renderTransactions(tx.transactions);
+      renderBudgets(budgets.budgets);
+      renderCategories(summary.expenses_by_category);
+      $("budget-category").value = $("budget-category").value.trim();
+      setStatus("Đã đồng bộ · " + month + " · " + new Date().toLocaleTimeString("vi-VN", { hour:"2-digit", minute:"2-digit" }));
+    } catch (error) { setStatus(error.message, true); }
+  }
+  function renderTransactions(rows) {
+    $("transactions").replaceChildren();
+    $("transactions-empty").hidden = rows.length !== 0;
+    for (const row of rows) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + escapeHTML(row.transaction_date) + "</td><td><span class='type " + escapeHTML(row.kind) + "'>" + (row.kind === "income" ? "Thu" : "Chi") + "</span></td><td>" + escapeHTML(row.category) + "</td><td class='note'>" + escapeHTML(row.note || "—") + "</td><td style='text-align:right;font-weight:700' class='" + (row.kind === "income" ? "green" : "red") + "'>" + (row.kind === "income" ? "+" : "−") + escapeHTML(money(row.amount_vnd)) + "</td>";
+      $("transactions").appendChild(tr);
+    }
+  }
+  function renderBudgets(rows) {
+    $("budgets").replaceChildren();
+    $("budgets-empty").hidden = rows.length !== 0;
+    for (const row of rows) {
+      const pct = row.budget_vnd > 0 ? Math.round(row.spent_vnd / row.budget_vnd * 100) : 0;
+      const item = document.createElement("div");
+      item.className = "budget";
+      item.innerHTML = "<div class='budget-line'><span class='budget-title'>" + escapeHTML(row.category) + "</span><span class='budget-numbers'>" + escapeHTML(money(row.spent_vnd)) + " / " + escapeHTML(money(row.budget_vnd)) + "</span></div><div class='bar'><span class='" + (pct > 100 ? "over" : "") + "' style='width:" + Math.min(100, Math.max(0, pct)) + "%'></span></div><div class='budget-foot'>" + (row.remaining_vnd < 0 ? "Vượt ngân sách " + escapeHTML(money(Math.abs(row.remaining_vnd))) : "Còn lại " + escapeHTML(money(row.remaining_vnd))) + " · " + pct + "% đã dùng</div>";
+      $("budgets").appendChild(item);
+    }
+  }
+  function renderCategories(rows) {
+    $("categories").replaceChildren();
+    $("categories-empty").hidden = rows.length !== 0;
+    for (const row of rows) {
+      const item = document.createElement("div");
+      item.className = "category-row";
+      item.innerHTML = "<span>" + escapeHTML(row.category) + "</span><strong>" + escapeHTML(money(row.amount_vnd)) + "</strong>";
+      $("categories").appendChild(item);
+    }
+  }
+  $("transaction-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = $("save-transaction");
+    const form = new FormData(event.currentTarget);
+    const payload = Object.fromEntries(form.entries());
+    payload.amount_vnd = Number(payload.amount_vnd);
+    button.disabled = true;
+    try {
+      await api("/api/transactions", { method:"POST", body:JSON.stringify(payload) });
+      event.currentTarget.reset();
+      $("transaction_date").value = localDate();
+      setStatus("Đã lưu giao dịch.");
+      await loadAll();
+    } catch (error) { setStatus(error.message, true); }
+    finally { button.disabled = false; }
+  });
+  $("budget-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = $("save-budget");
+    const form = new FormData(event.currentTarget);
+    const payload = Object.fromEntries(form.entries());
+    payload.amount_vnd = Number(payload.amount_vnd);
+    payload.month = selectedMonth();
+    button.disabled = true;
+    try {
+      await api("/api/budgets", { method:"POST", body:JSON.stringify(payload) });
+      $("budget-amount").value = "";
+      setStatus("Đã lưu ngân sách.");
+      await loadAll();
+    } catch (error) { setStatus(error.message, true); }
+    finally { button.disabled = false; }
+  });
+  $("month").addEventListener("change", loadAll);
+  $("month").value = localDate().slice(0, 7);
+  $("transaction_date").value = localDate();
+  loadAll();
+</script>
+</body>
+</html>
