@@ -1,0 +1,33 @@
+name: Student Finance Tests
+
+on:
+  push:
+    branches: [main, feature/student-finance-ai]
+    paths:
+      - "projects/student-finance-ai/**"
+      - ".github/workflows/student-finance-tests.yml"
+  pull_request:
+    paths:
+      - "projects/student-finance-ai/**"
+      - ".github/workflows/student-finance-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-tests:
+    name: Python unit and web API tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/student-finance-ai
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run test suite
+        run: python -m unittest discover -s tests -v

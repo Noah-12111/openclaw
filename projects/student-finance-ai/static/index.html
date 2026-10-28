@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#142843">
+  <title>SpendWise — Quản lý thu chi sinh viên</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink:#192b45; --muted:#718096; --line:#e4eaf1; --paper:#f4f7fb; --card:#fff;
+      --navy:#142843; --blue:#2e64d8; --blue-dark:#214cac; --mint:#dbf7ea; --green:#178356;
+      --rose:#ffebed; --red:#bc3748; --amber:#fff4d6; --gold:#ba7a0b; --shadow:0 12px 32px #1b36520c;
+      --radius:18px;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--paper); color:var(--ink); }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #8db3ff; outline-offset:2px; }
+    .topbar { background:var(--navy); color:#fff; padding:20px max(20px,calc((100vw - 1360px)/2)); display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; border-bottom:3px solid #7fe0b0; }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .logo { display:grid; place-items:center; width:46px; height:46px; flex:0 0 46px; border-radius:15px; background:#d8f7e8; color:#145c40; font-weight:900; font-size:24px; box-shadow:inset 0 0 0 1px #ffffff70; }
+    h1 { font-size:23px; line-height:1.15; margin:0; letter-spacing:-.035em; }
+    .subtitle { margin:5px 0 0; color:#c3d1e4; font-size:12px; }
+    .top-actions { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .month-box { display:flex; align-items:center; gap:10px; color:#dce7f6; font-size:12px; font-weight:650; }
+    .month-box input { width:164px; }
+    input,select { width:100%; min-width:0; border:1px solid #d4dce8; border-radius:10px; background:#fff; padding:10px 12px; color:var(--ink); }
+    input::placeholder { color:#9aa6b6; }
+    .topbar input { background:#fff; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid transparent; border-radius:10px; padding:10px 14px; font-size:12px; font-weight:750; transition:background .15s ease,border-color .15s ease,transform .15s ease; white-space:nowrap; }
+    .btn:hover { transform:translateY(-1px); }
+    .btn-primary { color:#fff; background:var(--blue); }
+    .btn-primary:hover { background:var(--blue-dark); }
+    .btn-light { color:var(--ink); background:#fff; border-color:#d9e1ed; }
+    .btn-light:hover { background:#f7f9fc; }
+    .btn-quiet { color:var(--muted); background:#f6f8fb; border-color:#e6ebf2; }
+    .btn-danger { color:var(--red); background:#fff; border-color:#f0cbd0; }
+    .btn-small { padding:7px 9px; font-size:11px; border-radius:8px; }
+    button:disabled { opacity:.55; cursor:wait; transform:none; }
+    main { max-width:1360px; margin:0 auto; padding:26px 24px 52px; }
+    .page-intro { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:19px; flex-wrap:wrap; }
+    .eyebrow { color:var(--blue); font-size:10px; font-weight:850; text-transform:uppercase; letter-spacing:.13em; margin:0 0 7px; }
+    h2 { font-size:17px; margin:0; letter-spacing:-.025em; }
+    h3 { font-size:14px; margin:0; letter-spacing:-.01em; }
+    .intro-note { color:var(--muted); margin:7px 0 0; font-size:12px; line-height:1.5; }
+    .status { min-height:18px; margin:0 0 12px; color:var(--muted); font-size:12px; display:flex; align-items:center; gap:7px; }
+    .status.error { color:var(--red); }
+    .status-dot { width:7px; height:7px; border-radius:50%; background:#8d9aab; flex:0 0 7px; }
+    .status.ok .status-dot { background:var(--green); }
+    .status.error .status-dot { background:var(--red); }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; margin-bottom:19px; }
+    .metric { min-width:0; position:relative; overflow:hidden; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); }
+    .metric:after { content:""; position:absolute; top:0; left:0; right:0; height:3px; background:#a5bce8; }
+    .metric.income:after { background:#48c995; } .metric.expense:after { background:#e9818c; } .metric.balance:after { background:#6c94f1; } .metric.count:after { background:#efbf58; }
+    .metric-head { display:flex; gap:12px; align-items:center; justify-content:space-between; }
+    .metric-label { color:var(--muted); font-size:12px; font-weight:650; }
+    .metric-symbol { display:grid; place-items:center; width:34px; height:34px; border-radius:11px; font-size:18px; background:#eff3ff; color:var(--blue); }
+    .metric.income .metric-symbol { background:var(--mint); color:var(--green); }
+    .metric.expense .metric-symbol { background:var(--rose); color:var(--red); }
+    .metric.count .metric-symbol { background:var(--amber); color:var(--gold); }
+    .metric-value { font-size:clamp(20px,2.1vw,29px); font-weight:820; letter-spacing:-.05em; margin-top:15px; overflow-wrap:anywhere; line-height:1.15; }
+    .metric-foot { color:var(--muted); font-size:11px; margin-top:8px; }
+    .positive { color:var(--green); } .negative { color:var(--red); }
+    .content-grid { display:grid; grid-template-columns:minmax(280px, .76fr) minmax(0,1.7fr); gap:18px; align-items:start; }
+    .stack { display:grid; gap:18px; min-width:0; }
+    .panel { min-width:0; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:21px; box-shadow:var(--shadow); }
+    .panel-heading { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:17px; }
+    .panel-caption { font-size:11px; color:var(--muted); margin:5px 0 0; line-height:1.5; }
+    .form-grid { display:grid; gap:13px; }
+    .field { min-width:0; display:grid; gap:6px; }
+    .field label { font-size:11px; font-weight:750; color:#47566b; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+    .form-help { font-size:10px; line-height:1.5; color:var(--muted); }
+    .wide { width:100%; }
+    .form-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .panel-divider { height:1px; background:var(--line); margin:19px 0; }
+    .budget-list { display:grid; gap:0; }
+    .budget-item { padding:13px 0; border-bottom:1px solid #edf0f5; }
+    .budget-item:last-child { border-bottom:0; padding-bottom:0; }
+    .budget-line { display:flex; gap:12px; justify-content:space-between; align-items:baseline; }
+    .budget-title { font-size:12px; font-weight:800; overflow-wrap:anywhere; }
+    .budget-numbers { color:var(--muted); font-size:10px; white-space:nowrap; text-align:right; }
+    .bar { margin:9px 0 6px; height:7px; border-radius:20px; background:#edf1f6; overflow:hidden; }
+    .bar span { display:block; height:100%; background:linear-gradient(90deg,#2d66dc,#62a3ff); border-radius:20px; }
+    .bar span.over { background:var(--red); }
+    .budget-foot { color:var(--muted); font-size:10px; display:flex; justify-content:space-between; gap:10px; align-items:center; }
+    .budget-remove { color:#9aa4b3; border:0; background:transparent; font-size:13px; padding:2px 5px; border-radius:6px; }
+    .budget-remove:hover { color:var(--red); background:var(--rose); }
+    .table-panel { padding:0; overflow:hidden; }
+    .table-top { padding:21px 21px 16px; border-bottom:1px solid var(--line); }
+    .table-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:15px; }
+    .count-pill { display:inline-flex; align-items:center; background:#edf3ff; color:var(--blue-dark); border-radius:30px; padding:5px 9px; font-size:10px; font-weight:800; }
+    .filters { display:grid; grid-template-columns:minmax(180px,1.4fr) minmax(130px,.7fr) minmax(140px,.8fr) auto; gap:9px; align-items:center; }
+    .search-wrap { position:relative; }
+    .search-wrap span { position:absolute; top:50%; left:12px; transform:translateY(-50%); color:#8a98ad; pointer-events:none; }
+    .search-wrap input { padding-left:34px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; text-align:left; font-size:12px; }
+    thead { background:#fafbfd; }
+    th { color:#7b8799; font-size:9px; text-transform:uppercase; letter-spacing:.08em; font-weight:850; white-space:nowrap; }
+    th,td { padding:14px 12px; border-bottom:1px solid #edf0f5; vertical-align:middle; }
+    th:first-child,td:first-child { padding-left:21px; } th:last-child,td:last-child { padding-right:21px; }
+    tbody tr:hover { background:#fbfcff; }
+    tbody tr:last-child td { border-bottom:0; }
+    td.date { color:#53647b; font-size:11px; white-space:nowrap; }
+    td.category { font-weight:750; white-space:nowrap; }
+    td.note { color:var(--muted); max-width:180px; min-width:90px; overflow-wrap:anywhere; }
+    td.amount { text-align:right; font-size:12px; font-weight:800; white-space:nowrap; }
+    td.actions { white-space:nowrap; }
+    .type { display:inline-flex; align-items:center; gap:5px; border-radius:30px; padding:5px 8px; font-size:10px; font-weight:800; white-space:nowrap; }
+    .type.income { color:var(--green); background:var(--mint); } .type.expense { color:var(--red); background:var(--rose); }
+    .table-foot { background:#fbfcfe; color:var(--muted); font-size:10px; padding:12px 21px; border-top:1px solid #edf0f5; }
+    .empty { padding:28px 16px; color:var(--muted); text-align:center; font-size:12px; line-height:1.6; }
+    .empty-icon { display:block; font-size:24px; margin-bottom:7px; }
+    .category-list { display:grid; gap:13px; }
+    .category-row { display:grid; grid-template-columns:minmax(80px,1fr) minmax(80px,1.8fr) auto; align-items:center; gap:11px; }
+    .category-name { font-size:11px; font-weight:750; overflow-wrap:anywhere; }
+    .category-track { height:7px; border-radius:20px; background:#edf1f6; overflow:hidden; }
+    .category-track span { display:block; height:100%; border-radius:20px; background:linear-gradient(90deg,#80b4fa,#386fe2); }
+    .category-amount { font-size:11px; font-weight:800; text-align:right; white-space:nowrap; }
+    .category-share { display:block; font-size:9px; color:var(--muted); margin-top:3px; font-weight:500; }
+    .footer { display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap; padding:18px 4px 0; color:#8a96a8; font-size:10px; line-height:1.5; }
+    .footer strong { color:#5d6e84; }
+    dialog { width:min(540px,calc(100vw - 28px)); border:1px solid var(--line); border-radius:19px; padding:0; box-shadow:0 26px 90px #14284340; color:var(--ink); }
+    dialog::backdrop { background:#10233b85; backdrop-filter:blur(3px); }
+    .dialog-head { display:flex; justify-content:space-between; align-items:start; gap:16px; padding:20px 22px; border-bottom:1px solid var(--line); }
+    .dialog-body { padding:21px 22px 23px; }
+    .dialog-close { border:0; background:#f2f5f9; color:var(--muted); border-radius:8px; width:30px; height:30px; font-size:17px; }
+    .dialog-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:18px; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media(max-width:1050px) { .content-grid { grid-template-columns:minmax(250px,.8fr) minmax(0,1.5fr); } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } .filters { grid-template-columns:minmax(140px,1.4fr) minmax(120px,.8fr) minmax(120px,.8fr); } .filters .btn { grid-column:1/-1; justify-self:start; } }
+    @media(max-width:780px) { .topbar { padding:17px 18px; } .top-actions { width:100%; justify-content:space-between; } main { padding:20px 16px 35px; } .content-grid { grid-template-columns:1fr; } .content-grid > .stack:first-child { grid-row:2; } .content-grid > .stack:last-child { grid-row:1; } .filters { grid-template-columns:1fr 1fr; } .filters .search-wrap { grid-column:1/-1; } .filters .btn { grid-column:auto; justify-self:stretch; } }
+    @media(max-width:520px) { .brand { align-items:flex-start; } h1 { font-size:20px; } .subtitle { max-width:240px; line-height:1.5; } .top-actions { align-items:stretch; flex-direction:column; } .month-box { justify-content:space-between; } .month-box input { flex:1; width:auto; } .top-actions > .btn { width:100%; } .metrics { gap:9px; } .metric { padding:14px; border-radius:14px; } .metric-value { font-size:20px; margin-top:12px; } .metric-label { font-size:10px; } .metric-symbol { width:29px; height:29px; font-size:15px; border-radius:9px; } .panel { padding:16px; border-radius:15px; } .table-top { padding:16px 15px 13px; } th,td { padding:12px 9px; } th:first-child,td:first-child { padding-left:15px; } th:last-child,td:last-child { padding-right:15px; } .filters { grid-template-columns:1fr; } .filters .search-wrap,.filters .btn { grid-column:auto; } .filters .btn { justify-self:stretch; } .category-row { grid-template-columns:minmax(72px,1fr) minmax(60px,1.3fr) auto; gap:8px; } .budget-numbers { font-size:9px; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">₫</div>
+      <div><h1>SpendWise</h1><p class="subtitle">Không để cuối tháng phải đoán tiền đã đi đâu.</p></div>
+    </div>
+    <div class="top-actions">
+      <div class="month-box"><label for="month">Báo cáo tháng</label><input id="month" type="month" aria-label="Chọn tháng báo cáo"></div>
+      <button id="export-button" class="btn btn-light" type="button"><span aria-hidden="true">⇩</span> Xuất CSV</button>
+      <button id="import-button" class="btn btn-light" type="button"><span aria-hidden="true">⇧</span> Nhập CSV</button>
+      <input id="csv-file" type="file" accept=".csv,text/csv" hidden>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-intro">
+      <div><p class="eyebrow">Tổng quan tài chính cá nhân</p><h2>Xin chào! Đây là tình hình chi tiêu của bạn.</h2><p class="intro-note">Mọi số liệu được tính từ giao dịch đã lưu trên máy, không phải ước tính của AI.</p></div>
+    </section>
+    <div id="status" class="status" role="status" aria-live="polite"><span class="status-dot"></span><span id="status-message">Đang kết nối cơ sở dữ liệu…</span></div>
+
+    <section class="metrics" aria-label="Tổng quan tháng">
+      <article class="metric income"><div class="metric-head"><div class="metric-label">Tổng thu</div><span class="metric-symbol" aria-hidden="true">↗</span></div><div id="income" class="metric-value positive">—</div><div class="metric-foot">Tiền vào trong tháng</div></article>
+      <article class="metric expense"><div class="metric-head"><div class="metric-label">Tổng chi</div><span class="metric-symbol" aria-hidden="true">↘</span></div><div id="expenses" class="metric-value negative">—</div><div class="metric-foot">Tiền ra trong tháng</div></article>
+      <article class="metric balance"><div class="metric-head"><div class="metric-label">Chênh lệch thu – chi</div><span class="metric-symbol" aria-hidden="true">⇄</span></div><div id="balance" class="metric-value">—</div><div id="balance-foot" class="metric-foot">Tổng thu trừ tổng chi</div></article>
+      <article class="metric count"><div class="metric-head"><div class="metric-label">Giao dịch</div><span class="metric-symbol" aria-hidden="true">≡</span></div><div id="tx-count" class="metric-value">—</div><div class="metric-foot">Số giao dịch đã ghi nhận</div></article>
+    </section>
+
+    <div class="content-grid">
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Thêm giao dịch</h3><p class="panel-caption">Ghi lại khoản thu hoặc chi ngay khi phát sinh.</p></div></div>
+          <form id="transaction-form" class="form-grid">
+            <div class="two-col">
+              <div class="field"><label for="kind">Loại giao dịch</label><select id="kind" name="kind"><option value="expense">Khoản chi</option><option value="income">Khoản thu</option></select></div>
+              <div class="field"><label for="amount">Số tiền (VND)</label><input id="amount" name="amount_vnd" type="number" min="1" max="9000000000000000000" step="1" inputmode="numeric" placeholder="45.000" required></div>
+            </div>
+            <div class="field"><label for="category">Danh mục</label><input id="category" name="category" list="categories" maxlength="80" placeholder="Ví dụ: Ăn uống" required><datalist id="categories"><option value="Ăn uống"><option value="Nhà ở"><option value="Đi lại"><option value="Học phí"><option value="Tài liệu học tập"><option value="Sức khỏe"><option value="Giải trí"><option value="Tiền sinh hoạt"><option value="Lương"><option value="Khác"></datalist></div>
+            <div class="field"><label for="transaction_date">Ngày giao dịch</label><input id="transaction_date" name="transaction_date" type="date" required></div>
+            <div class="field"><label for="note">Ghi chú <span style="font-weight:500;color:#8c98a9">(không bắt buộc)</span></label><input id="note" name="note" maxlength="500" placeholder="Ví dụ: Cơm trưa ở trường"></div>
+            <button id="save-transaction" class="btn btn-primary wide" type="submit">＋ Lưu giao dịch</button>
+            <p class="form-help">Số tiền phải là VND nguyên dương. Bạn có thể sửa hoặc xóa giao dịch đã lưu ở bảng bên cạnh.</p>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Ngân sách tháng</h3><p class="panel-caption">Đặt hạn mức cho từng danh mục chi tiêu.</p></div></div>
+          <form id="budget-form" class="form-grid">
+            <div class="field"><label for="budget-category">Danh mục</label><input id="budget-category" name="category" list="categories" maxlength="80" placeholder="Ăn uống" required></div>
+            <div class="field"><label for="budget-amount">Hạn mức (VND)</label><input id="budget-amount" name="amount_vnd" type="number" min="1" max="9000000000000000000" step="1" inputmode="numeric" placeholder="1.000.000" required></div>
+            <button id="save-budget" class="btn btn-primary wide" type="submit">Lưu ngân sách tháng</button>
+          </form>
+          <div class="panel-divider"></div>
+          <div id="budgets" class="budget-list"></div>
+          <div id="budgets-empty" class="empty" hidden><span class="empty-icon">◎</span>Chưa có ngân sách.<br>Hãy đặt hạn mức cho danh mục đầu tiên.</div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><div><h3>Tiền đang đi đâu?</h3><p class="panel-caption">Phân bổ tổng chi theo danh mục.</p></div></div>
+          <div id="categories" class="category-list"></div>
+          <div id="categories-empty" class="empty" hidden><span class="empty-icon">◌</span>Chưa có khoản chi trong tháng này.</div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="panel table-panel">
+          <div class="table-top">
+            <div class="table-heading"><div><h3>Lịch sử giao dịch</h3><p class="panel-caption">Tìm kiếm, lọc và chỉnh sửa các khoản đã ghi nhận.</p></div><span id="filtered-count" class="count-pill">0 giao dịch</span></div>
+            <div class="filters">
+              <div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Tìm theo danh mục hoặc ghi chú…" aria-label="Tìm giao dịch"></div>
+              <select id="kind-filter" aria-label="Lọc theo loại"><option value="">Tất cả thu/chi</option><option value="income">Chỉ khoản thu</option><option value="expense">Chỉ khoản chi</option></select>
+              <select id="category-filter" aria-label="Lọc theo danh mục"><option value="">Tất cả danh mục</option></select>
+              <button id="clear-filters" class="btn btn-quiet" type="button">Xóa bộ lọc</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Ngày</th><th>Loại</th><th>Danh mục</th><th>Ghi chú</th><th style="text-align:right">Số tiền</th><th><span class="sr-only">Thao tác</span></th></tr></thead>
+              <tbody id="transactions"></tbody>
+            </table>
+            <div id="transactions-empty" class="empty" hidden><span class="empty-icon">▤</span>Không tìm thấy giao dịch nào.<br>Thử đổi bộ lọc hoặc thêm giao dịch mới.</div>
+          </div>
+          <div class="table-foot"><span id="table-summary">Giao dịch được sắp xếp mới nhất trước.</span> Dữ liệu lưu trong SQLite trên máy này.</div>
+        </section>
+      </div>
+    </div>
+
+    <footer class="footer"><span><strong>SpendWise</strong> · Công cụ quản lý tài chính dành cho sinh viên.</span><span>Chạy cục bộ · SQLite · Dùng chung dữ liệu với CLI và skill OpenClaw.</span></footer>
+  </main>
+
+  <dialog id="edit-dialog" aria-labelledby="edit-title">
+    <div class="dialog-head"><div><h3 id="edit-title">Chỉnh sửa giao dịch</h3><p class="panel-caption">Thay đổi sẽ cập nhật ngay vào báo cáo và ngân sách.</p></div><button id="close-edit" class="dialog-close" type="button" aria-label="Đóng">×</button></div>
+    <div class="dialog-body">
+      <form id="edit-form" class="form-grid">
+        <input type="hidden" id="edit-id">
+        <div class="two-col"><div class="field"><label for="edit-kind">Loại giao dịch</label><select id="edit-kind" required><option value="expense">Khoản chi</option><option value="income">Khoản thu</option></select></div><div class="field"><label for="edit-amount">Số tiền (VND)</label><input id="edit-amount" type="number" min="1" max="9000000000000000000" step="1" required></div></div>
+        <div class="field"><label for="edit-category">Danh mục</label><input id="edit-category" list="categories" maxlength="80" required></div>
+        <div class="field"><label for="edit-date">Ngày giao dịch</label><input id="edit-date" type="date" required></div>
+        <div class="field"><label for="edit-note">Ghi chú</label><input id="edit-note" maxlength="500"></div>
+        <div class="dialog-actions"><button id="cancel-edit" class="btn btn-light" type="button">Hủy</button><button id="update-transaction" class="btn btn-primary" type="submit">Lưu thay đổi</button></div>
+      </form>
+    </div>
+  </dialog>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  let refreshTimer = null;
+  const localDate = () => {
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  };
+  const money = (amount) => new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 }).format(amount) + " ₫";
+  const shortMoney = (amount) => {
+    if (amount >= 1_000_000_000) return (amount / 1_000_000_000).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + " tỷ";
+    if (amount >= 1_000_000) return (amount / 1_000_000).toLocaleString("vi-VN", { maximumFractionDigits: 1 }) + " tr";
+    return money(amount);
+  };
+  function setStatus(message, level = "normal") {
+    $("status-message").textContent = message;
+    $("status").className = "status " + (level === "error" ? "error" : level === "ok" ? "ok" : "");
+  }
+  async function request(path, options = {}) {
+    const headers = { ...(options.headers || {}) };
+    if (options.body && !Object.keys(headers).some(k => k.toLowerCase() === "content-type")) headers["Content-Type"] = "application/json";
+    const response = await fetch(path, { cache: "no-store", ...options, headers });
+    const type = response.headers.get("Content-Type") || "";
+    const data = type.includes("application/json") ? await response.json() : await response.text();
+    if (!response.ok) throw new Error(data?.error || (typeof data === "string" ? data : "Không thể xử lý yêu cầu."));
+    return data;
+  }
+  function selectedMonth() { return $("month").value; }
+  function queryWithMonth(extra = {}) {
+    const query = new URLSearchParams({ month: selectedMonth(), ...extra });
+    return query.toString();
+  }
+  function appendCell(row, text, className = "") {
+    const cell = document.createElement("td");
+    if (className) cell.className = className;
+    cell.textContent = text;
+    row.appendChild(cell);
+    return cell;
+  }
+  async function loadAll() {
+    const month = selectedMonth();
+    if (!month) return;
+    setStatus("Đang đồng bộ với cơ sở dữ liệu…");
+    try {
+      const [summary, tx, budgets, categoryData] = await Promise.all([
+        request("/api/summary?" + queryWithMonth()),
+        request("/api/transactions?" + queryWithMonth({
+          limit:"1000", search:$("search").value.trim(), kind:$("kind-filter").value, category:$("category-filter").value
+        })),
+        request("/api/budgets?" + queryWithMonth()),
+        request("/api/categories")
+      ]);
+      $("income").textContent = money(summary.income_vnd);
+      $("expenses").textContent = money(summary.expenses_vnd);
+      $("balance").textContent = money(summary.balance_vnd);
+      $("balance").className = "metric-value " + (summary.balance_vnd < 0 ? "negative" : "positive");
+      $("balance-foot").textContent = summary.balance_vnd < 0 ? "Chi tiêu đang cao hơn thu nhập" : "Thu nhập trừ đi chi tiêu";
+      $("tx-count").textContent = new Intl.NumberFormat("vi-VN").format(summary.transaction_count);
+      $("filtered-count").textContent = tx.transactions.length + " kết quả";
+      renderTransactions(tx.transactions);
+      renderBudgets(budgets.budgets);
+      renderCategories(summary.expenses_by_category, summary.expenses_vnd);
+      refreshCategoryOptions(categoryData.categories);
+      setStatus("Đã đồng bộ · " + month + " · " + new Date().toLocaleTimeString("vi-VN", { hour:"2-digit", minute:"2-digit" }), "ok");
+    } catch (error) {
+      setStatus(error.message || "Không thể tải dữ liệu. Hãy kiểm tra máy chủ web.", "error");
+    }
+  }
+  function refreshCategoryOptions(categories) {
+    const filter = $("category-filter");
+    const selected = filter.value;
+    filter.replaceChildren(new Option("Tất cả danh mục", ""));
+    for (const category of categories) {
+      filter.add(new Option(category, category));
+    }
+    filter.value = categories.includes(selected) ? selected : "";
+    const datalist = $("categories");
+    datalist.replaceChildren();
+    for (const category of categories) datalist.add(new Option(category, category));
+  }
+  function renderTransactions(rows) {
+    const body = $("transactions");
+    body.replaceChildren();
+    $("transactions-empty").hidden = rows.length !== 0;
+    for (const item of rows) {
+      const row = document.createElement("tr");
+      appendCell(row, item.transaction_date, "date");
+      const typeCell = document.createElement("td");
+      const type = document.createElement("span");
+      type.className = "type " + item.kind;
+      type.textContent = item.kind === "income" ? "↗ Thu" : "↘ Chi";
+      typeCell.appendChild(type);
+      row.appendChild(typeCell);
+      appendCell(row, item.category, "category");
+      appendCell(row, item.note || "—", "note");
+      appendCell(row, (item.kind === "income" ? "+" : "−") + money(item.amount_vnd), "amount " + (item.kind === "income" ? "positive" : "negative"));
+      const actions = document.createElement("td");
+      actions.className = "actions";
+      const edit = document.createElement("button");
+      edit.type = "button"; edit.className = "btn btn-light btn-small"; edit.textContent = "Sửa"; edit.setAttribute("aria-label", "Sửa giao dịch " + item.id);
+      edit.addEventListener("click", () => openEdit(item));
+      const remove = document.createElement("button");
+      remove.type = "button"; remove.className = "btn btn-danger btn-small"; remove.textContent = "Xóa"; remove.style.marginLeft = "5px"; remove.setAttribute("aria-label", "Xóa giao dịch " + item.id);
+      remove.addEventListener("click", () => removeTransaction(item));
+      actions.append(edit, remove); row.appendChild(actions); body.appendChild(row);
+    }
+    $("table-summary").textContent = rows.length ? "Hiển thị tối đa 1.000 giao dịch phù hợp trong tháng đã chọn." : "Không có giao dịch phù hợp với bộ lọc.";
+  }
+  function renderBudgets(rows) {
+    const root = $("budgets");
+    root.replaceChildren();
+    $("budgets-empty").hidden = rows.length !== 0;
+    for (const item of rows) {
+      const wrapper = document.createElement("div"); wrapper.className = "budget-item";
+      const line = document.createElement("div"); line.className = "budget-line";
+      const name = document.createElement("span"); name.className = "budget-title"; name.textContent = item.category;
+      const amount = document.createElement("span"); amount.className = "budget-numbers"; amount.textContent = money(item.spent_vnd) + " / " + money(item.budget_vnd);
+      line.append(name, amount);
+      const bar = document.createElement("div"); bar.className = "bar";
+      const fill = document.createElement("span");
+      const percent = Math.round(item.spent_vnd / item.budget_vnd * 100);
+      fill.style.width = Math.min(100, percent) + "%";
+      if (percent > 100) fill.classList.add("over");
+      bar.appendChild(fill);
+      const foot = document.createElement("div"); foot.className = "budget-foot";
+      const note = document.createElement("span");
+      note.textContent = item.remaining_vnd < 0 ? "Vượt " + money(Math.abs(item.remaining_vnd)) : "Còn " + money(item.remaining_vnd);
+      if (item.remaining_vnd < 0) note.className = "negative";
+      const remove = document.createElement("button"); remove.type = "button"; remove.className = "budget-remove"; remove.textContent = "×"; remove.title = "Xóa ngân sách " + item.category;
+      remove.addEventListener("click", () => removeBudget(item));
+      foot.append(note, remove); wrapper.append(line, bar, foot); root.appendChild(wrapper);
+    }
+  }
+  function renderCategories(rows, totalExpenses) {
+    const root = $("categories");
+    root.replaceChildren();
+    $("categories-empty").hidden = rows.length !== 0;
+    for (const item of rows) {
+      const wrapper = document.createElement("div"); wrapper.className = "category-row";
+      const name = document.createElement("div"); name.className = "category-name"; name.textContent = item.category;
+      const track = document.createElement("div"); track.className = "category-track";
+      const fill = document.createElement("span"); fill.style.width = (totalExpenses ? Math.min(100, item.amount_vnd / totalExpenses * 100) : 0) + "%"; track.appendChild(fill);
+      const amount = document.createElement("div"); amount.className = "category-amount"; amount.textContent = shortMoney(item.amount_vnd);
+      const share = document.createElement("span"); share.className = "category-share"; share.textContent = (totalExpenses ? Math.round(item.amount_vnd / totalExpenses * 100) : 0) + "% tổng chi"; amount.appendChild(share);
+      wrapper.append(name, track, amount); root.appendChild(wrapper);
+    }
+  }
+  function openEdit(item) {
+    $("edit-id").value = item.id;
+    $("edit-kind").value = item.kind;
+    $("edit-amount").value = item.amount_vnd;
+    $("edit-category").value = item.category;
+    $("edit-date").value = item.transaction_date;
+    $("edit-note").value = item.note || "";
+    $("edit-dialog").showModal();
+  }
+  function closeEdit() { $("edit-dialog").close(); }
+  async function removeTransaction(item) {
+    const description = item.category + " · " + money(item.amount_vnd) + " · " + item.transaction_date;
+    if (!confirm("Xóa giao dịch này?\n" + description + "\nThao tác này không thể hoàn tác.")) return;
+    try {
+      await request("/api/transactions/" + item.id, { method:"DELETE" });
+      setStatus("Đã xóa giao dịch #" + item.id + ".", "ok");
+      await loadAll();
+    } catch (error) { setStatus(error.message, "error"); }
+  }
+  async function removeBudget(item) {
+    if (!confirm("Xóa ngân sách danh mục “" + item.category + "” của tháng " + selectedMonth() + "? Các giao dịch không bị xóa.")) return;
+    try {
+      await request("/api/budgets?" + new URLSearchParams({ month:selectedMonth(), category:item.category }), { method:"DELETE" });
+      setStatus("Đã xóa ngân sách " + item.category + ".", "ok");
+      await loadAll();
+    } catch (error) { setStatus(error.message, "error"); }
+  }
+
+  $("transaction-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formElement = event.currentTarget;
+    const button = $("save-transaction"); button.disabled = true;
+    const payload = Object.fromEntries(new FormData(formElement).entries());
+    payload.amount_vnd = Number(payload.amount_vnd);
+    try {
+      const result = await request("/api/transactions", { method:"POST", body:JSON.stringify(payload) });
+      formElement.reset(); $("transaction_date").value = localDate();
+      $("month").value = payload.transaction_date.slice(0, 7);
+      $("search").value = ""; $("kind-filter").value = ""; $("category-filter").value = "";
+      setStatus("Đã lưu giao dịch #" + result.id + ".", "ok");
+      await loadAll();
+    } catch (error) { setStatus(error.message, "error"); }
+    finally { button.disabled = false; }
+  });
+  $("budget-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = $("save-budget"); button.disabled = true;
+    const form = new FormData(event.currentTarget);
+    const payload = { category:String(form.get("category") || ""), amount_vnd:Number(form.get("amount_vnd")), month:selectedMonth() };
+    try {
+      await request("/api/budgets", { method:"POST", body:JSON.stringify(payload) });
+      $("budget-amount").value = "";
+      setStatus("Đã lưu ngân sách cho " + payload.category + ".", "ok");
+      await loadAll();
+    } catch (error) { setStatus(error.message, "error"); }
+    finally { button.disabled = false; }
+  });
+  $("edit-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const button = $("update-transaction"); button.disabled = true;
+    const payload = {
+      kind:$("edit-kind").value,
+      amount_vnd:Number($("edit-amount").value),
+      category:$("edit-category").value.trim(),
+      transaction_date:$("edit-date").value,
+      note:$("edit-note").value
+    };
+    try {
+      await request("/api/transactions/" + Number($("edit-id").value), { method:"PUT", body:JSON.stringify(payload) });
+      closeEdit();
+      $("month").value = payload.transaction_date.slice(0, 7);
+      setStatus("Đã cập nhật giao dịch.", "ok");
+      await loadAll();
+    } catch (error) { setStatus(error.message, "error"); }
+    finally { button.disabled = false; }
+  });
+  $("close-edit").addEventListener("click", closeEdit);
+  $("cancel-edit").addEventListener("click", closeEdit);
+  $("edit-dialog").addEventListener("click", (event) => { if (event.target === $("edit-dialog")) closeEdit(); });
+  $("export-button").addEventListener("click", () => { window.location.href = "/api/export.csv?" + queryWithMonth(); });
+  $("import-button").addEventListener("click", () => $("csv-file").click());
+  $("csv-file").addEventListener("change", async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { setStatus("CSV không được vượt quá 2 MB.", "error"); event.target.value = ""; return; }
+    if (!confirm("Nhập " + file.name + "? Các dòng hợp lệ sẽ được thêm vào dữ liệu hiện tại; ứng dụng không tự loại giao dịch trùng. Nên sao lưu hoặc kiểm tra file trước khi tiếp tục.")) { event.target.value = ""; return; }
+    setStatus("Đang kiểm tra và nhập CSV…");
+    try {
+      const text = await file.text();
+      const result = await request("/api/import.csv", { method:"POST", headers:{"Content-Type":"text/csv; charset=utf-8"}, body:text });
+      setStatus("Đã nhập " + result.imported + " giao dịch. Báo cáo đã cập nhật.", "ok");
+      await loadAll();
+    } catch (error) { setStatus(error.message, "error"); }
+    finally { event.target.value = ""; }
+  });
+  $("month").addEventListener("change", () => { $("search").value = ""; loadAll(); });
+  $("kind-filter").addEventListener("change", loadAll);
+  $("category-filter").addEventListener("change", loadAll);
+  $("search").addEventListener("input", () => {
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(loadAll, 220);
+  });
+  $("clear-filters").addEventListener("click", () => {
+    $("search").value = ""; $("kind-filter").value = ""; $("category-filter").value = ""; loadAll();
+  });
+
+  $("month").value = localDate().slice(0, 7);
+  $("transaction_date").value = localDate();
+  loadAll();
+</script>
+</body>
+</html>
