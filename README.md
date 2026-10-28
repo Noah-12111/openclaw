@@ -100,6 +100,47 @@ pnpm ui:build
 
 Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [hướng dẫn thiết lập mã nguồn](https://docs.openclaw.ai/start/setup) để nắm quy trình phát triển.
 
+## Dự án thực hành cá nhân
+
+Phần này ghi lại một dự án web độc lập được xây dựng trong quá trình thử nghiệm và học lập trình cùng fork này. **Ví Sinh Viên không phải tính năng tích hợp sẵn của OpenClaw**, cũng không phải thành phần chính thức của dự án OpenClaw.
+
+### Ví Sinh Viên — Quản lý thu chi cá nhân
+
+Ứng dụng web giúp sinh viên theo dõi thu nhập, chi tiêu và ngân sách theo tháng.
+
+**Các chức năng đã xây dựng:**
+
+- Bảng tổng quan số dư, tổng thu nhập, tổng chi tiêu và tỷ lệ tiết kiệm.
+- Thêm, sửa, xóa giao dịch; tìm kiếm và lọc theo loại giao dịch.
+- Phân loại các khoản chi như ăn uống, đi lại, học tập, nhà ở, mua sắm và giải trí.
+- Biểu đồ dòng tiền và thống kê chi tiêu theo danh mục.
+- Thiết lập ngân sách tháng, theo dõi số tiền đã dùng và còn lại.
+- Xuất giao dịch CSV và sao lưu/khôi phục dữ liệu JSON.
+
+**Công nghệ:** HTML, CSS và JavaScript thuần; Node.js cung cấp máy chủ web cục bộ. Ứng dụng không cần thư viện npm bên ngoài. Giao dịch được lưu trong `localStorage` của trình duyệt, chưa có backend hoặc đồng bộ giữa các thiết bị.
+
+#### Chạy demo trên Windows và VS Code
+
+Tải và giải nén bộ dự án Ví Sinh Viên riêng, sau đó mở đúng thư mục có các file `index.html`, `styles.css`, `app.js`, `index.js` và `package.json`. Mở Terminal trong VS Code và chạy:
+
+```powershell
+node -v
+node --check .\index.js
+node --check .\app.js
+npm.cmd start
+```
+
+Khi terminal báo máy chủ đang chạy, mở [http://127.0.0.1:5500](http://127.0.0.1:5500) trong trình duyệt. Giữ terminal mở trong lúc sử dụng; nhấn `Ctrl+C` để dừng máy chủ.
+
+Có thể chạy kiểm tra cú pháp bằng:
+
+```powershell
+npm.cmd run check
+```
+
+Không cần chạy `npm install` cho bản demo hiện tại và không có lệnh `node cli.js budget ...`; ngân sách được thiết lập trong giao diện **Ngân sách**. Hãy sao lưu JSON định kỳ nếu có dữ liệu cần giữ lại.
+
+---
 ## Quản trị dự án
 
 OpenClaw được phát triển công khai dưới sự quản lý của [OpenClaw Foundation](https://openclaw.org), một tổ chức độc lập theo diện 501(c)(3). Foundation tuyển dụng đội ngũ nòng cốt và ký xác nhận các bản phát hành. Các nhà tài trợ và đơn vị hỗ trợ hạ tầng hỗ trợ Foundation nhưng không sở hữu hay điều hành dự án. OpenAI là nhà tài trợ, không phải chủ sở hữu.
