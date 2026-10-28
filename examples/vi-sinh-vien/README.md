@@ -1,6 +1,6 @@
 # Ví Sinh Viên — Quản lý thu chi
 
-Ứng dụng web thực hành để quản lý khoản thu, chi và ngân sách theo tháng. Đây là dự án độc lập trong fork OpenClaw, không phải chức năng tích hợp sẵn của OpenClaw và không gọi Gateway hoặc mô hình AI.
+Ứng dụng web thực hành để quản lý khoản thu, chi và ngân sách theo tháng. Trợ lý cục bộ có thể tách mô tả ngắn như “ăn trưa 35k hôm nay” thành các trường giao dịch để người dùng xác nhận trước khi lưu. Đây là dự án độc lập trong fork OpenClaw, không phải chức năng tích hợp sẵn của OpenClaw và không gọi Gateway hoặc mô hình AI.
 
 ## Cấu trúc thư mục
 
@@ -34,6 +34,7 @@ Mở http://127.0.0.1:5500. Dừng máy chủ bằng Ctrl+C. Hoặc bấm đúp 
 
 - Bảng tổng quan số dư, tổng thu, tổng chi và tỷ lệ tiết kiệm theo tháng.
 - Thêm, sửa, xóa, tìm kiếm giao dịch.
+- Nhập nhanh từ mô tả tự nhiên: thử “ăn trưa 35k hôm nay” hoặc “nhận lương làm thêm 2 triệu hôm qua”; trợ lý tách loại, tiền, ngày và danh mục để người dùng kiểm tra trước khi lưu.
 - Gợi ý tự động danh mục theo tên/nội dung giao dịch.
 - Trợ lý phân tích theo ngày, tháng hoặc năm; so sánh kỳ liền trước, nhận diện danh mục chiếm tỷ trọng lớn và phát hiện khoản chi lặp qua nhiều tháng.
 - Gợi ý mức chi theo ngân sách, cảnh báo vượt ngân sách và mẹo tiết kiệm dựa trên dữ liệu đã ghi.
@@ -44,7 +45,7 @@ Mở http://127.0.0.1:5500. Dừng máy chủ bằng Ctrl+C. Hoặc bấm đúp 
 
 ## Trợ lý chi tiêu thông minh
 
-Trợ lý dùng quy tắc từ khóa và phép tính thống kê ngay trong trình duyệt, không gọi API AI và không gửi dữ liệu giao dịch ra ngoài. Chọn Ngày/Tháng/Năm cùng ngày mốc để xem tổng thu, tổng chi, xu hướng so với kỳ liền trước, danh mục chiếm tỷ trọng lớn, ngân sách và gợi ý hành động. Khi nhập tên giao dịch, ứng dụng đề xuất danh mục phù hợp; người dùng vẫn có thể sửa. Mẫu chi tiêu trùng tên ở nhiều tháng được đánh dấu là khoản có thể định kỳ, không tự tạo giao dịch thay người dùng.
+Trợ lý dùng quy tắc từ khóa, phân tích câu nhập nhanh và phép tính thống kê ngay trong trình duyệt, không gọi API AI và không gửi dữ liệu giao dịch ra ngoài. Chọn Ngày/Tháng/Năm cùng ngày mốc để xem tổng thu, tổng chi, xu hướng so với kỳ liền trước, danh mục chiếm tỷ trọng lớn, ngân sách và gợi ý hành động. Khi nhập tên giao dịch, ứng dụng đề xuất danh mục phù hợp; người dùng vẫn có thể sửa. Mẫu chi tiêu trùng tên ở nhiều tháng được đánh dấu là khoản có thể định kỳ, không tự tạo giao dịch thay người dùng.
 
 ## Các thành phần đã tận dụng
 

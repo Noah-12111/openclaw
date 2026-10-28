@@ -3,7 +3,7 @@ import { currentMonth, localDate, monthlySummary, expensesByCategory } from "./f
 import { validateTransactionInput, parseBackupData } from "./input.js";
 import { loadState, saveState, clearState } from "./storage.js";
 import { escapeHtml, formatMoney, transactionRow, downloadFile } from "./output.js";
-import { suggestCategory, analyzeSpending } from "./assistant.js";
+import { suggestCategory, analyzeSpending, parseQuickTransaction } from "./assistant.js";
 
 const $ = selector => document.querySelector(selector);
 const now = new Date();
@@ -200,6 +200,25 @@ function importBackup(file) {
 }
 function bindEvents() {
   $("#transaction-form").addEventListener("submit", onTransactionSubmit);
+  $("#quick-entry-parse").addEventListener("click", () => {
+    const result = parseQuickTransaction($("#quick-entry-text").value, localDate(new Date()));
+    if (!result.ok) {
+      showNotice(result.error, true);
+      return;
+    }
+    const item = result.value;
+    $("#transaction-type").value = item.type;
+    categoryManuallyChosen = false;
+    lastSuggestedCategory = "";
+    refreshCategories(item.category);
+    $("#transaction-name").value = item.name;
+    $("#transaction-amount").value = String(item.amount);
+    $("#transaction-date").value = item.date;
+    $("#transaction-note").value = "";
+    applyCategorySuggestion();
+    showNotice("Đã tự điền thông tin. Hãy kiểm tra loại, ngày, danh mục và số tiền rồi bấm Lưu giao dịch.");
+    $("#transaction-name").focus();
+  });
   $("#transaction-type").addEventListener("change", () => { categoryManuallyChosen = false; lastSuggestedCategory = ""; refreshCategories(); applyCategorySuggestion(); });
   $("#transaction-category").addEventListener("change", () => { categoryManuallyChosen = true; lastSuggestedCategory = ""; $("#category-auto-hint").textContent = "Bạn đã chọn danh mục thủ công: " + $("#transaction-category").value + "."; $("#category-auto-hint").classList.add("manual"); });
   $("#transaction-name").addEventListener("input", applyCategorySuggestion);

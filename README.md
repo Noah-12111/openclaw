@@ -108,7 +108,7 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [
 - Sắp xếp mã nguồn của dự án thực hành thu–chi vào thư mục độc lập [examples/vi-sinh-vien/](examples/vi-sinh-vien/).
 
 ### [Ví Sinh Viên — Quản lý thu chi](examples/vi-sinh-vien/)
-Ứng dụng web demo giúp sinh viên ghi chép thu nhập, chi tiêu, xem tổng số dư, phân tích chi tiêu theo danh mục, đặt ngân sách theo tháng, sửa/xóa giao dịch và xuất/khôi phục dữ liệu CSV/JSON. Bản mới có trợ lý phân tích theo ngày/tháng/năm, gợi ý danh mục khi nhập giao dịch, so sánh kỳ liền trước, phát hiện mẫu chi tiêu có thể định kỳ và đưa ra gợi ý ngân sách bằng quy tắc cục bộ.
+Ứng dụng web demo giúp sinh viên ghi chép thu nhập, chi tiêu, xem tổng số dư, phân tích chi tiêu theo danh mục, đặt ngân sách theo tháng, sửa/xóa giao dịch và xuất/khôi phục dữ liệu CSV/JSON. Bản mới có trợ lý phân tích theo ngày/tháng/năm, tự điền giao dịch từ mô tả như “ăn trưa 35k hôm nay”, gợi ý danh mục, so sánh kỳ liền trước, phát hiện mẫu chi tiêu có thể định kỳ và đề xuất ngân sách bằng quy tắc cục bộ.
 
 **Cấu trúc mã nguồn:** `index.html`, `styles.css`, máy chủ `index.js`, cùng các module trong `src/`:
 - `main.js`: khởi động ứng dụng, gắn sự kiện và điều phối giao diện.
@@ -117,7 +117,7 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [
 - `storage.js`: lưu, đọc và xóa dữ liệu trong `localStorage`.
 - `finance.js`: tổng thu/chi, số dư, tỷ lệ tiết kiệm và nhóm chi tiêu.
 - `config.js`: danh mục giao dịch và cấu hình.
-- `assistant.js`: gợi ý danh mục, phân tích ngày/tháng/năm, so sánh xu hướng và gợi ý ngân sách theo quy tắc cục bộ.
+- `assistant.js`: tách câu nhập nhanh, gợi ý danh mục, phân tích ngày/tháng/năm, so sánh xu hướng và gợi ý ngân sách theo quy tắc cục bộ.
 - `tests/input.test.js`: kiểm thử dữ liệu đầu vào bằng `node:test`.
 - `tests/assistant.test.js`: kiểm thử gợi ý danh mục và phân tích theo ngày/tháng/năm bằng `node:test`.
 

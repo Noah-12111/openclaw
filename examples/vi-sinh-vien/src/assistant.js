@@ -259,3 +259,65 @@ export function analyzeSpending(transactions = [], budgets = {}, options = {}) {
     recommendations: recommendations.slice(0, 4)
   };
 }
+
+
+const SUFFIXED_AMOUNT = /(\d{1,3}(?:[.,]\d{3})+|\d+(?:[.,]\d+)?)\s*(triệu|trieu|tr|m|nghìn|nghin|ngàn|ngan|k|đồng|dong|vnd)(?=$|\s|[.,!?])/iu;
+const UNSUFFIXED_AMOUNT = /(\d{1,3}(?:[.,]\d{3})+|\d{4,})/u;
+
+function parseAmount(raw, unitText = "") {
+  const unit = normalizeText(unitText);
+  const grouped = /^\d{1,3}(?:[.,]\d{3})+$/.test(raw);
+  const number = grouped ? Number(raw.replace(/[.,]/g, "")) : Number(raw.replace(",", "."));
+  if (!Number.isFinite(number) || number <= 0) return 0;
+  if (["trieu", "tr", "m"].includes(unit)) return Math.round(number * 1000000);
+  if (["nghin", "ngan", "k"].includes(unit)) return Math.round(number * 1000);
+  return Math.round(number);
+}
+
+export function parseQuickTransaction(input, defaultDate) {
+  const text = String(input || "").trim();
+  if (!text) return { ok: false, error: "Nhập mô tả giao dịch trước khi tự điền." };
+  const baseDate = parseDate(defaultDate) || new Date();
+  const anchor = new Date(baseDate);
+  anchor.setHours(0, 0, 0, 0);
+  const explicitDate = /(?:ngày\s*)?(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?/iu.exec(text);
+  let date = new Date(anchor);
+  if (explicitDate) {
+    const day = Number(explicitDate[1]);
+    const month = Number(explicitDate[2]);
+    let year = explicitDate[3] ? Number(explicitDate[3]) : anchor.getFullYear();
+    if (year < 100) year += 2000;
+    const candidate = new Date(year, month - 1, day);
+    if (candidate.getFullYear() !== year || candidate.getMonth() !== month - 1 || candidate.getDate() !== day) {
+      return { ok: false, error: "Ngày trong mô tả không hợp lệ. Hãy sửa ngày sau khi tự điền." };
+    }
+    date = candidate;
+  } else {
+    const normalized = normalizeText(text);
+    if (/\b(hom qua|yesterday)\b/.test(normalized)) date.setDate(date.getDate() - 1);
+    else if (/\b(ngay mai|tomorrow)\b/.test(normalized)) date.setDate(date.getDate() + 1);
+  }
+
+  let working = explicitDate ? text.replace(explicitDate[0], " ") : text;
+  working = working.replace(/hôm nay|hôm qua|ngày mai|today|yesterday|tomorrow/giu, " ");
+  let amountMatch = SUFFIXED_AMOUNT.exec(working);
+  if (!amountMatch) amountMatch = UNSUFFIXED_AMOUNT.exec(working);
+  if (!amountMatch) {
+    return { ok: false, error: "Chưa nhận diện được số tiền. Thử nhập “ăn trưa 35k hôm nay” hoặc “nhận lương 2 triệu”." };
+  }
+  const amount = parseAmount(amountMatch[1], amountMatch[2] || "");
+  if (!amount) return { ok: false, error: "Số tiền chưa hợp lệ." };
+  working = working.slice(0, amountMatch.index) + " " + working.slice(amountMatch.index + amountMatch[0].length);
+  const removablePhrases = ["khoản thu", "khoản chi", "thu nhập", "chi tiêu", "nhận", "được", "đã", "today", "yesterday", "tomorrow", "hôm nay", "hôm qua", "ngày mai"];
+  removablePhrases.forEach(phrase => {
+    working = working.replace(new RegExp("(^|\\s)" + phrase + "(?=\\s|$)", "giu"), "$1");
+  });
+  const name = working.replace(/\s+/g, " ").replace(/^[\s,;:.-]+|[\s,;:.-]+$/g, "").trim();
+  if (name.length < 2) return { ok: false, error: "Chưa nhận diện được tên giao dịch. Hãy thêm mô tả như “ăn trưa” hoặc “lương làm thêm”." };
+
+  const normalizedText = normalizeText(text);
+  const isIncome = /\b(nhan luong|nhan hoc bong|nhan tro cap|nhan tien|luong|hoc bong|tro cap|thu nhap|doanh thu|ban hang|freelance|lam them|tien cong)\b/.test(normalizedText);
+  const type = isIncome ? "income" : "expense";
+  const category = suggestCategory(name + " " + text, type) || "Khác";
+  return { ok: true, value: { type, name: name.slice(0, 80), amount, category, date: keyDate(date) } };
+}

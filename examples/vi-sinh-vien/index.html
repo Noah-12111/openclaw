@@ -50,6 +50,11 @@
     <section class="grid">
       <article class="panel">
         <div class="panel-heading"><div><h2>Thêm giao dịch</h2><p class="muted">Ghi lại một khoản thu hoặc chi.</p></div></div>
+        <div class="quick-entry">
+          <label for="quick-entry-text">Nhập nhanh bằng câu tự nhiên</label>
+          <div class="quick-entry-row"><input id="quick-entry-text" type="text" maxlength="180" placeholder="Ví dụ: ăn trưa 35k hôm nay"><button id="quick-entry-parse" class="button secondary" type="button">Tự điền</button></div>
+          <p class="muted">Ví dụ: “ăn trưa 35k hôm nay” hoặc “nhận lương làm thêm 2 triệu hôm qua”. Hãy kiểm tra thông tin trước khi lưu.</p>
+        </div>
         <form id="transaction-form">
           <input id="transaction-id" type="hidden">
           <div class="form-grid">

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { suggestCategory, analyzeSpending } from "../src/assistant.js";
+import { suggestCategory, analyzeSpending, parseQuickTransaction } from "../src/assistant.js";
 
 test("auto-categorizes common Vietnamese expense text without accents", () => {
   assert.equal(suggestCategory("Cà phê trước giờ học", "expense"), "Ăn uống");
@@ -48,4 +48,27 @@ test("year analysis aggregates monthly budgets", () => {
   assert.equal(result.transactions, 2);
   assert.equal(result.budget, 4000000);
   assert.ok(result.recommendations.some(line => line.includes("tháng còn lại")));
+});
+
+
+test("quick entry parses expense amount, category, and today", () => {
+  const result = parseQuickTransaction("ăn trưa 35k hôm nay", "2026-10-28");
+  assert.equal(result.ok, true);
+  assert.equal(result.value.type, "expense");
+  assert.equal(result.value.amount, 35000);
+  assert.equal(result.value.category, "Ăn uống");
+  assert.equal(result.value.date, "2026-10-28");
+  assert.equal(result.value.name, "ăn trưa");
+});
+test("quick entry parses income expressed in millions and yesterday", () => {
+  const result = parseQuickTransaction("nhận lương làm thêm 2 triệu hôm qua", "2026-10-28");
+  assert.equal(result.ok, true);
+  assert.equal(result.value.type, "income");
+  assert.equal(result.value.amount, 2000000);
+  assert.equal(result.value.category, "Làm thêm");
+  assert.equal(result.value.date, "2026-10-27");
+});
+test("quick entry rejects text without a usable amount", () => {
+  const result = parseQuickTransaction("đi học hôm nay", "2026-10-28");
+  assert.equal(result.ok, false);
 });
