@@ -100,9 +100,13 @@ pnpm ui:build
 
 Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [hướng dẫn thiết lập mã nguồn](https://docs.openclaw.ai/start/setup) để nắm quy trình phát triển.
 
-## Dự án thực hành cá nhân
+## Các tùy biến và dự án đã thực hiện trong fork này
 
-Phần này ghi lại một dự án web độc lập được xây dựng trong quá trình thử nghiệm và học lập trình cùng fork này. **Ví Sinh Viên không phải tính năng tích hợp sẵn của OpenClaw**, cũng không phải thành phần chính thức của dự án OpenClaw.
+### Tùy biến README và nhận diện
+
+- Việt hóa README để hướng dẫn và mô tả dự án dễ đọc hơn với người dùng tiếng Việt.
+- Thiết kế lại banner README theo chủ đề trợ lý AI hỗ trợ lập trình. Tệp banner hiện nằm tại `docs/assets/openclaw-banner-ai-coding.svg`.
+- Bổ sung tài liệu cho dự án thực hành cá nhân bên dưới. Dự án này là ứng dụng độc lập, **không phải chức năng tích hợp sẵn của OpenClaw**.
 
 ### Ví Sinh Viên — Quản lý thu chi cá nhân
 
@@ -141,6 +145,7 @@ npm.cmd run check
 Không cần chạy `npm install` cho bản demo hiện tại và không có lệnh `node cli.js budget ...`; ngân sách được thiết lập trong giao diện **Ngân sách**. Hãy sao lưu JSON định kỳ nếu có dữ liệu cần giữ lại.
 
 ---
+
 ## Quản trị dự án
 
 OpenClaw được phát triển công khai dưới sự quản lý của [OpenClaw Foundation](https://openclaw.org), một tổ chức độc lập theo diện 501(c)(3). Foundation tuyển dụng đội ngũ nòng cốt và ký xác nhận các bản phát hành. Các nhà tài trợ và đơn vị hỗ trợ hạ tầng hỗ trợ Foundation nhưng không sở hữu hay điều hành dự án. OpenAI là nhà tài trợ, không phải chủ sở hữu.
