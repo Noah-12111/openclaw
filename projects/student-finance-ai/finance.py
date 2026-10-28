@@ -97,7 +97,7 @@ def _validate_transaction(kind: str, amount_vnd: int, category: str,
     clean_note = note.strip()
     if len(clean_note) > MAX_NOTE_LENGTH:
         raise ValueError(f"Note cannot exceed {MAX_NOTE_LENGTH} characters.")
-    tx_date = validate_date(transaction_date or date.today().isoformat())
+    tx_date = validate_date(transaction_date if transaction_date is not None else date.today().isoformat())
     return kind, amount_vnd, clean_category, clean_note, tx_date
 
 
