@@ -1,51 +1,74 @@
 # Student Finance AI — SpendWise
 
-A privacy-conscious personal income and expense tracker designed for students. This runnable MVP is intended to become an OpenClaw-powered assistant.
+Ứng dụng quản lý thu chi dành cho sinh viên. **Web app, CLI Python và skill OpenClaw dùng chung một cơ sở dữ liệu SQLite**, nên giao dịch được ghi ở giao diện nào cũng xuất hiện ở giao diện còn lại.
 
-## Features
-- Record income and expenses with date, category, integer VND amount, and note.
-- Store data in local SQLite.
-- List transactions; calculate monthly income, expenses, and balance.
-- Set and inspect monthly category budgets.
-- Keep calculations deterministic in Python; AI should interpret requests, not invent totals.
+## Tính năng hiện có
 
-## Requirements
-Python 3.10+. No third-party packages required.
+- Ghi khoản thu/chi với số tiền VND, danh mục, ngày và ghi chú.
+- Dashboard web tiếng Việt: tổng thu, tổng chi, số dư, danh sách giao dịch và phân tích chi theo danh mục.
+- Đặt ngân sách từng danh mục theo tháng và theo dõi mức đã dùng/còn lại.
+- CLI Python cho các thao tác tương tự; OpenClaw skill hướng dẫn trợ lý gọi CLI bằng công cụ thực thi lệnh được cấu hình.
+- Tất cả phép tính được thực hiện trong Python/SQLite, không để mô hình tự đoán tổng tiền.
+- Chỉ dùng thư viện chuẩn Python, không cần cài package bên thứ ba.
 
-## Quick start
+## Yêu cầu
+
+Python 3.10 trở lên.
+
+## Chạy web app
+
+Từ thư mục `projects/student-finance-ai`:
 
 ```bash
 python finance.py init
-python finance.py add --type expense --amount 25000 --category food --note "Breakfast"
-python finance.py add --type income --amount 1500000 --category allowance --note "Monthly allowance"
-python finance.py list
+python web_app.py
+```
+
+Mở http://127.0.0.1:8765 trên cùng máy. Máy chủ chỉ bind vào địa chỉ loopback để mặc định không mở dashboard ra mạng LAN/Internet.
+
+## Dùng CLI
+
+```bash
+python finance.py add --type expense --amount 45000 --category food --note "Ăn trưa"
+python finance.py add --type income --amount 1500000 --category allowance --note "Tiền sinh hoạt"
+python finance.py list --month 2026-10
 python finance.py summary --month 2026-10
-python finance.py budget-set --month 2026-10 --category food --amount 900000
+python finance.py budget-set --month 2026-10 --category food --amount 1000000
 python finance.py budgets --month 2026-10
 ```
 
-The database defaults to `./student_finance.db`. Set `STUDENT_FINANCE_DB` to choose another location and use that same variable for subsequent commands.
+## Cơ sở dữ liệu dùng chung
 
-## Tests
+Mặc định database được lưu trong thư mục home của người dùng tại:
+
+```text
+~/.student-finance/student_finance.db
+```
+
+Vị trí ổn định này giúp CLI, web app và bản skill được cài ở thư mục khác vẫn nhìn thấy cùng dữ liệu. Có thể đặt biến môi trường `STUDENT_FINANCE_DB` để đổi đường dẫn; nếu đổi, hãy đặt cùng giá trị cho tiến trình web app và tiến trình OpenClaw Gateway.
+
+## Cài skill OpenClaw
+
+1. Sao chép **toàn bộ thư mục** `student-finance-ai` vào thư mục skills của workspace OpenClaw, ví dụ `<workspace>/skills/student-finance/`. Thư mục cài đặt cần chứa cả `SKILL.md` và `finance.py`.
+2. Đảm bảo OpenClaw đã nạp skill theo cấu hình workspace. Nếu vừa cài mới, khởi động lại/làm mới Gateway theo quy trình của bản OpenClaw bạn đang dùng.
+3. Cho phép skill dùng công cụ thực thi lệnh cục bộ theo cấu hình an toàn của bạn. Khi cần gọi CLI, trợ lý phải dùng **đường dẫn tuyệt đối** tới `finance.py` trong thư mục skill; không giả định thư mục làm việc hiện tại.
+4. Chạy `python finance.py init` một lần (hoặc gọi lệnh `init` với đường dẫn tuyệt đối). Web app và skill sẽ dùng chung database mặc định trong thư mục home.
+
+Skill là lớp hướng dẫn cho trợ lý, không phải plugin tự đăng ký API tool riêng. Các thao tác ghi phải đi qua CLI đã kiểm tra tham số; không cho mô hình chạy SQL tùy ý. Khả năng gọi lệnh phụ thuộc việc công cụ thực thi lệnh đã được bật và giới hạn trong OpenClaw hay chưa.
+
+## Chạy kiểm thử
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## Data model
-- `transactions`: kind (`income` or `expense`), positive integer VND amount, category, note, ISO date.
-- `budgets`: month (`YYYY-MM`), category, positive integer VND limit.
+Bộ kiểm thử bao gồm business logic, kiểm tra ngày/tháng, ngân sách và HTTP API dùng cùng SQLite.
 
-## OpenClaw integration plan
-`SKILL.md` describes assistant behavior and intended tool contract. The Python CLI is the deterministic business-logic MVP; it is not yet registered as an OpenClaw plugin. Next, expose validated tools such as `add_transaction`, `list_transactions`, `get_monthly_summary`, and `set_budget` through a version-pinned plugin or local adapter.
+## Dữ liệu và an toàn
 
-## Privacy and safety
-- Data stays in the local SQLite file unless explicitly exported or transmitted.
-- Never store bank passwords, authentication codes, or full payment-card details.
-- Back up the database securely.
-- Confirm ambiguous amounts/dates before saving through a future AI interface.
-- Do not allow a model to execute arbitrary SQL; validate arguments and use parameterized SQL.
-- This is a budgeting aid, not financial, tax, or investment advice.
-
-## Limitations
-No bank connection, automatic payment, web dashboard, or scheduled notifications. Categories are user-supplied; automatic natural-language categorization belongs to future OpenClaw integration. Edit/delete commands are not implemented yet.
+- Lưu cục bộ; không kết nối ngân hàng, không chuyển tiền, không tự gửi dữ liệu ra dịch vụ ngoài.
+- Máy chủ web hiện chưa có đăng nhập, vì vậy chỉ chạy trên máy cá nhân và không expose ra mạng.
+- Không nhập mật khẩu ngân hàng, OTP hoặc toàn bộ thông tin thẻ.
+- Sao lưu file database một cách an toàn.
+- Hiện chưa có chức năng sửa/xóa giao dịch, nhập sao kê ngân hàng hoặc đồng bộ nhiều thiết bị.
+- Đây là công cụ lập ngân sách cá nhân, không phải tư vấn tài chính, thuế hay đầu tư.
