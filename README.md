@@ -118,7 +118,8 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [
 - `finance.js`: tổng thu/chi, số dư, tỷ lệ tiết kiệm và nhóm chi tiêu.
 - `config.js`: danh mục giao dịch và cấu hình.
 - `assistant.js`: gợi ý danh mục, phân tích ngày/tháng/năm, so sánh xu hướng và gợi ý ngân sách theo quy tắc cục bộ.
-- `tests/input.test.js`: kiểm thử đầu vào bằng `node:test`.
+- `tests/input.test.js`: kiểm thử dữ liệu đầu vào bằng `node:test`.
+- `tests/assistant.test.js`: kiểm thử gợi ý danh mục và phân tích theo ngày/tháng/năm bằng `node:test`.
 
 **Những công nghệ/API đã tận dụng:** HTML cho cấu trúc form và bảng; CSS cho dashboard responsive; JavaScript ES modules, DOM và event listeners cho logic giao dịch; `Intl.NumberFormat` cho tiền Việt Nam; `localStorage` để lưu dữ liệu cục bộ; `Blob`, `FileReader` và `URL.createObjectURL` cho xuất/nhập file; các module tích hợp sẵn của Node.js (`http`, `fs`, `path`, `url`) để chạy máy chủ trên localhost; GitHub fork và README để tổ chức mã nguồn, hướng dẫn chạy và theo dõi commit. Dự án không cần thư viện npm bên ngoài. Trợ lý hiện là phân tích theo quy tắc chạy tại trình duyệt, chưa gọi mô hình AI hoặc OpenClaw Gateway.
 

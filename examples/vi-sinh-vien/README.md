@@ -16,7 +16,8 @@
 - src/finance.js — tổng thu chi, số dư, nhóm danh mục
 - src/config.js — danh mục và cấu hình
 - src/assistant.js — gợi ý danh mục, phát hiện mẫu chi tiêu lặp và phân tích ngày/tháng/năm
-- tests/input.test.js và tests/assistant.test.js — kiểm thử đầu vào và trợ lý — kiểm thử validation bằng node:test
+- tests/input.test.js — kiểm thử dữ liệu đầu vào bằng node:test
+- tests/assistant.test.js — kiểm thử gợi ý danh mục và phân tích theo ngày/tháng/năm bằng node:test
 
 ## Chạy trên Windows / VS Code
 
