@@ -1,10 +1,7 @@
 # OpenClaw 🦞 — Trợ lý AI của bạn, trên thiết bị của bạn và trong các cuộc trò chuyện
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-banner-light.png">
-    <img src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-banner-dark.png" alt="OpenClaw — Trợ lý AI chạy trên chính thiết bị của bạn.">
-  </picture>
+  <img src="https://raw.githubusercontent.com/Noah-12111/openclaw/main/docs/assets/openclaw-banner-ai-coding.svg" alt="OpenClaw — Trợ lý AI hỗ trợ lập trình, chạy cục bộ và trên đám mây." width="100%">
 </p>
 
 <p align="center">
