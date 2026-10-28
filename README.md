@@ -105,9 +105,9 @@ Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình đóng góp và [
 ### Tùy biến fork OpenClaw
 - Việt hóa README để dễ đọc hơn với người dùng tiếng Việt.
 - Thiết kế lại banner README theo chủ đề trợ lý AI hỗ trợ lập trình tại `docs/assets/openclaw-banner-ai-coding.svg`.
-- Sắp xếp mã nguồn của dự án thực hành thu–chi vào thư mục độc lập `examples/vi-sinh-vien/`.
+- Sắp xếp mã nguồn của dự án thực hành thu–chi vào thư mục độc lập [examples/vi-sinh-vien/](examples/vi-sinh-vien/).
 
-### Ví Sinh Viên — Quản lý thu chi
+### [Ví Sinh Viên — Quản lý thu chi](examples/vi-sinh-vien/)
 Ứng dụng web demo giúp sinh viên ghi chép thu nhập, chi tiêu, xem tổng số dư, phân tích chi tiêu theo danh mục, đặt ngân sách theo tháng, sửa/xóa giao dịch và xuất/khôi phục dữ liệu CSV/JSON.
 
 **Cấu trúc mã nguồn:** `index.html`, `styles.css`, máy chủ `index.js`, cùng các module trong `src/`:
